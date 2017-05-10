@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ConsoleGui.Drawing
 {
@@ -41,18 +42,29 @@ namespace ConsoleGui.Drawing
 			}
 
 			if (titleText != null) {
+				DrawString (region.Left + 1, region.Top, titleText, region.Right-1);
 			}
 
 		}
 
 		public void FillRectangle (ConsoleGui.Drawing.Rect region)
 		{
+			for (int y = region.Top; y <= region.Bottom; y++) {
+				Console.SetCursorPosition(region.Left, y);
+				Console.Write (" ".PadRight (region.Right - region.Left));
+			}
 		}
 
 		public void DrawString (int left, int top, string text, int right = -1, int offset = 0, int cursorLeft = -1, bool isOverwrite = false)
 		{
+			
 			Console.SetCursorPosition (left, top);
-			Console.Write (text);
+
+			if (right == -1) {
+				Console.Write (text.Skip(offset));
+			} else {
+				Console.Write (text.Skip (offset).Take(right - left));
+			}
 		}
 
 		public void DrawText (ConsoleGui.Drawing.Rect region, 
