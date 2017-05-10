@@ -39,7 +39,7 @@ namespace ConsoleGui.Interfaces.Drawing
 		/// <param name="offset">Offset.</param>
 		/// <param name="cursorLeft">Cursor left.</param>
 		/// <param name="isOverwrite">If set to <c>true</c> is overwrite.</param>
-		void DrawString(int top, int left, string text, int right = -1, int offset = 0, int cursorLeft = -1, bool isOverwrite = false);
+		void DrawString(int left, int top, string text, int right = -1, int offset = 0, int cursorLeft = -1, bool isOverwrite = false);
 
 		/// <summary>
 		/// Draws the text.
