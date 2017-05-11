@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ConsoleGui.Drawing
 {
@@ -42,7 +44,7 @@ namespace ConsoleGui.Drawing
 			}
 
 			if (titleText != null) {
-				DrawString (region.Left + 1, region.Top, titleText, region.Right-1);
+				DrawString (region.Left + 1, region.Top, titleText, region.Right - 1);
 			}
 
 		}
@@ -50,7 +52,7 @@ namespace ConsoleGui.Drawing
 		public void FillRectangle (ConsoleGui.Drawing.Rect region)
 		{
 			for (int y = region.Top; y <= region.Bottom; y++) {
-				Console.SetCursorPosition(region.Left, y);
+				Console.SetCursorPosition (region.Left, y);
 				Console.Write (" ".PadRight (region.Right - region.Left));
 			}
 		}
@@ -61,9 +63,9 @@ namespace ConsoleGui.Drawing
 			Console.SetCursorPosition (left, top);
 
 			if (right == -1) {
-				Console.Write (text.Skip(offset));
+				Console.Write (string.Concat(text.Skip (offset)));
 			} else {
-				Console.Write (text.Skip (offset).Take(right - left));
+				Console.Write (string.Concat(text.Skip (offset).Take (right - left)));
 			}
 		}
 
@@ -77,6 +79,85 @@ namespace ConsoleGui.Drawing
 		                      int cursorTop = -1,
 		                      bool isOverwrite = false)
 		{
+			var lines = new List<string> ();
+
+			var textRegion = new Rect (region.Left, region.Top, region.Right, region.Bottom);
+
+			// draw the border if available.
+			// if there is a border, shrink the text region to make room.
+			if (border) {
+				textRegion.Left += 1;
+				textRegion.Right -= 1;
+				textRegion.Top += 1;
+				textRegion.Bottom -= 1;
+
+				DrawString (region.Left, region.Top, "┌");
+				DrawString (region.Right, region.Top, "┐");
+				DrawString (region.Left, region.Bottom, "└");
+				DrawString (region.Right, region.Bottom, "┘");
+
+				DrawString (region.Left + 1, region.Top, string.Concat(Enumerable.Repeat ('─', region.Right - region.Left - 1)));
+				DrawString (region.Left + 1, region.Bottom, string.Concat(Enumerable.Repeat ('─', region.Right - region.Left - 1)));
+
+				for (int y = region.Top + 1; y <= region.Bottom - 1; y++) {
+					DrawString (region.Left, y, "│");
+					DrawString (region.Right, y, "│");
+
+				}
+
+			}
+
+			// Clear out whatever got left behind
+			FillRectangle (textRegion);
+
+			var splitParagraphs = text.Split ('\n');
+
+			foreach (var p in splitParagraphs) {
+
+				var splitText = p.Split (' ');
+
+				var sb = new StringBuilder ();
+				for (int i = 0; i < splitText.Length; i++) {
+					if (sb.Length + splitText [i].Length <= textRegion.Right - textRegion.Left -1) {
+						sb.Append (splitText [i]); 
+						sb.Append (" ");
+					} else {
+						lines.Add (sb.ToString ());
+						sb = new StringBuilder ();
+						sb.Append (splitText [i]); 
+						sb.Append (" ");
+					}
+				}
+				if (sb.ToString ().Length > 0) {
+					lines.Add (sb.ToString ());
+				}
+				sb.AppendLine ();
+			}
+
+			// scroll the text.
+			var actualLines = lines.Skip (lineOffset).Take (textRegion.Bottom - textRegion.Top+1).ToList ();
+
+			// draw the text line by line.
+			for (int i = 0; i < actualLines.Count; i++) {
+				DrawString (textRegion.Left, textRegion.Top + i, actualLines [i], textRegion.Right);
+			}
+
+			// if a scroll bar is needed, draw it. The scroll bar sits on the right part of the window.
+			if (drawScrollbarIfNeeded && lines.Count > textRegion.Bottom - textRegion.Top) {
+				if (!border) {
+					DrawString (region.Right, region.Bottom, "┴");
+					DrawString (region.Right, region.Top, "┬");
+
+					for (int y = region.Top + 1; y <= region.Bottom - 1; y++) {
+						DrawString (region.Right, y, "│");
+					}
+				}
+
+				var cursorY = textRegion.Top + (int)( ((double)lineOffset / (double)lines.Count) * (double)(textRegion.Bottom-textRegion.Top));
+			
+				DrawString (region.Right, cursorY, "█");
+			}
+
 		}
 
 	}
