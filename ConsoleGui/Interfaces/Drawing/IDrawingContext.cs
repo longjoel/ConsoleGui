@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleGui.Interfaces.Drawing
 {
@@ -23,8 +24,22 @@ namespace ConsoleGui.Interfaces.Drawing
 		/// <param name="region">Region.</param>
 		/// <param name="titleText">Title text.</param>
 		/// <param name="statusText">Status text.</param>
-		void DrawBorder (ConsoleGui.Drawing.Rect region, string titleText = null, string statusText = null);
+		void DrawThickBorder (ConsoleGui.Drawing.Rect region, string titleText = null, string statusText = null);
 
+
+		/// <summary>
+		/// Draws the thin border.
+		/// </summary>
+		/// <param name="region">Region.</param>
+		/// <param name="titleText">Title text.</param>
+		/// <param name="statusText">Status text.</param>
+		void DrawThinBorder (ConsoleGui.Drawing.Rect region, string titleText = null, string statusText = null);
+
+
+		/// <summary>
+		/// Fill a rectangle with the default background color.
+		/// </summary>
+		/// <param name="region">Region.</param>
 		void FillRectangle (ConsoleGui.Drawing.Rect region);
 
 		/// <summary>
@@ -39,7 +54,7 @@ namespace ConsoleGui.Interfaces.Drawing
 		/// <param name="offset">Offset.</param>
 		/// <param name="cursorLeft">Cursor left.</param>
 		/// <param name="isOverwrite">If set to <c>true</c> is overwrite.</param>
-		void DrawString(int left, int top, string text, int right = -1, int offset = 0, int cursorLeft = -1, bool isOverwrite = false);
+		void DrawString (int left, int top, string text, int right = -1, int offset = 0, int cursorLeft = -1, bool isOverwrite = false);
 
 		/// <summary>
 		/// Draws the text.
@@ -54,15 +69,28 @@ namespace ConsoleGui.Interfaces.Drawing
 		/// <param name="cursorTop">Cursor top.</param>
 		/// <param name="isOverwrite">If set to <c>true</c> is overwrite.</param>
 		void DrawText (ConsoleGui.Drawing.Rect region, 
-			string text, 
-			bool border = true,
-			bool wordWrap = true,
-			int lineOffset = 0,
-			bool drawScrollbarIfNeeded = true,
-			int cursorLeft = -1,
-			int cursorTop = -1,
-			bool isOverwrite = false
-			);
+		               string text, 
+		               bool border = true,
+		               bool wordWrap = true,
+		               int lineOffset = 0,
+		               bool drawScrollbarIfNeeded = true,
+		               int cursorLeft = -1,
+		               int cursorTop = -1,
+		               bool isOverwrite = false
+		);
+
+		/// <summary>
+		/// Calculates the text lines.
+		/// </summary>
+		/// <returns>The text lines.</returns>
+		/// <param name="region">Region.</param>
+		/// <param name="text">Text.</param>
+		/// <param name="border">If set to <c>true</c> border.</param>
+		/// <param name="wordwrap">If set to <c>true</c> wordwrap.</param>
+		List<string> CalculateTextLines (ConsoleGui.Drawing.Rect region,
+		                                 string text, 
+		                                 bool border = true, 
+		                                 bool wordwrap = true);
 	}
 }
 

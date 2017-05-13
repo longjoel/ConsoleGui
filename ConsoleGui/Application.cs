@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleGui
 {
@@ -21,7 +22,20 @@ namespace ConsoleGui
 
 			while (!_isExiting) {
 			
-			
+				if (Console.KeyAvailable) {
+					var kInfo = Console.ReadKey (true);
+
+					// universal exit key. Can exit any form.
+					if (kInfo.Key == ConsoleKey.Escape) {
+						Internals.WindowManager.Instance.Pop ();
+					}
+
+					if (Internals.WindowManager.Instance.Forms.Any ()) {
+						Internals.WindowManager.Instance.Forms.Last ().HandleInput (kInfo);
+					} else {
+						break;
+					}
+				}
 			
 			}
 		}

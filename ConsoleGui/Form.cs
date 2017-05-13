@@ -26,6 +26,10 @@ namespace ConsoleGui
 		/// <value>The controls.</value>
 		public List<Control> Controls{ get; set; }
 
+		public Control ControlWithFocus { get; private set; }
+
+		private int _controlFocusedIndex;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConsoleGui.Form"/> class.
 		/// </summary>
@@ -33,12 +37,14 @@ namespace ConsoleGui
 		{
 			IsInvalid = true;
 			Controls = new List<Control> ();
+			_controlFocusedIndex = -1;
 		}
 
 		/// <summary>
 		/// Invaldate this Form, indicating that this form is due to be redrawn.
 		/// </summary>
-		public void Invaldate(){
+		public void Invaldate ()
+		{
 			IsInvalid = true;
 		}
 
@@ -46,7 +52,32 @@ namespace ConsoleGui
 		/// Handles the input.
 		/// </summary>
 		/// <param name="keyInfo">Key info.</param>
-		public virtual void HandleInput (ConsoleKeyInfo keyInfo){
+		public virtual void HandleInput (ConsoleKeyInfo keyInfo)
+		{
+			// by default the tab key is going to switch the active control.
+			if(keyInfo.Key == ConsoleKey.Tab){
+				if (_controlFocusedIndex != -1) {
+					Controls [_controlFocusedIndex].IsFocus = false;
+					Controls [_controlFocusedIndex].Invaldate();
+				}
+
+				// if the shift modifier is used, go back up one line instead of down.
+				if (keyInfo.Modifiers.HasFlag( ConsoleModifiers.Shift)) {
+					_controlFocusedIndex -= 1;
+					if (_controlFocusedIndex < 0 ) {
+						_controlFocusedIndex = Controls.Count-1;
+					}
+				} else {
+					_controlFocusedIndex += 1;
+					if (_controlFocusedIndex >= Controls.Count) {
+						_controlFocusedIndex = 0;
+					}
+				}
+
+				Controls [_controlFocusedIndex].IsFocus = true;
+				Controls [_controlFocusedIndex].Invaldate ();
+
+			}
 			
 		}
 
@@ -54,7 +85,13 @@ namespace ConsoleGui
 		/// Handles the repaint.
 		/// </summary>
 		/// <param name="context">Context.</param>
-		public virtual void HandleRepaint (Interfaces.Drawing.IDrawingContext context){
+		public virtual void HandleRepaint (Interfaces.Drawing.IDrawingContext context)
+		{
+			foreach (var c in Controls) {
+				if (c.IsInvalid) {
+					c.HandleRepaint (context);
+				}
+			}
 			IsInvalid = false;
 		}
 	}

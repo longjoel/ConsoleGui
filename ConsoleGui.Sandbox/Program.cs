@@ -7,7 +7,7 @@ namespace ConsoleGui.Sandbox
 		public static void TestConsoleDrawingContext(){
 			var dc = new Drawing.ConsoleDrawingContext ();
 
-			dc.DrawBorder (new ConsoleGui.Drawing.Rect (0, 0, 16, 16));
+			dc.DrawThickBorder (new ConsoleGui.Drawing.Rect (0, 0, 16, 16));
 
 			Console.ReadLine ();
 

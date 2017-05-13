@@ -39,6 +39,8 @@
     <Compile Include="Drawing\Rect.cs" />
     <Compile Include="Interfaces\Drawing\IDrawingContext.cs" />
     <Compile Include="Drawing\ConsoleDrawingContext.cs" />
+    <Compile Include="Dialogs\YesNoDialog.cs" />
+    <Compile Include="Controls\Label.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
