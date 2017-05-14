@@ -45,7 +45,7 @@ namespace ConsoleGui
 		/// <summary>
 		/// Invaldate this Form, indicating that this form is due to be redrawn.
 		/// </summary>
-		public void Invaldate ()
+		public void Invalidate ()
 		{
 			IsInvalid = true;
 		}
@@ -59,8 +59,8 @@ namespace ConsoleGui
 			// by default the tab key is going to switch the active control.
 			if (keyInfo.Key == ConsoleKey.Tab) {
 				if (_controlFocusedIndex != -1) {
-					Controls [_controlFocusedIndex].IsFocus = false;
-					Controls [_controlFocusedIndex].Invaldate ();
+					Controls [_controlFocusedIndex].HasFocus = false;
+					Controls [_controlFocusedIndex].Invalidate ();
 				}
 
 				// if the shift modifier is used, go back up one line instead of down.
@@ -76,10 +76,10 @@ namespace ConsoleGui
 					}
 				}
 
-				Controls [_controlFocusedIndex].IsFocus = true;
-				Controls [_controlFocusedIndex].Invaldate ();
+				Controls [_controlFocusedIndex].HasFocus = true;
+				Controls [_controlFocusedIndex].Invalidate ();
 
-				Invaldate ();
+				Invalidate ();
 
 			} else {
 				if (_controlFocusedIndex != -1) {

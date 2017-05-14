@@ -6,7 +6,7 @@ namespace ConsoleGui
 	{
 		public Drawing.Rect Region { get; set; }
 
-		public bool IsFocus { get; set; }
+		public bool HasFocus { get; set; }
 		public bool IsInvalid { get; set; }
 
 		Form ParentForm { get; set; }
@@ -18,7 +18,7 @@ namespace ConsoleGui
 		/// <summary>
 		/// Invaldate this Form, indicating that this form is due to be redrawn.
 		/// </summary>
-		public void Invaldate(){
+		public void Invalidate(){
 			IsInvalid = true;
 		}
 

@@ -19,12 +19,12 @@ namespace ConsoleGui.Internals
 
 		public void Push(Form form){
 			Forms.Add (form);
-			form.Invaldate ();
+			form.Invalidate ();
 		}
 
 		public void Close(Form form){
 			Forms.Remove (form);
-			Forms.ForEach (f => f.Invaldate ());
+			Forms.ForEach (f => f.Invalidate ());
 		}
 
 		public void Pop(){
@@ -33,7 +33,7 @@ namespace ConsoleGui.Internals
 			}
 
 			if (Forms.Any ()) {
-				Forms.Last ().Invaldate ();
+				Forms.Last ().Invalidate ();
 			}
 		}
 	}

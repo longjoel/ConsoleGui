@@ -12,7 +12,7 @@ namespace ConsoleGui.Controls
 			get{ return _text; }
 			set {
 				_text = value;
-				Invaldate ();
+				Invalidate ();
 			}
 		}
 
@@ -34,7 +34,7 @@ namespace ConsoleGui.Controls
 
 		public override void HandleRepaint (ConsoleGui.Interfaces.Drawing.IDrawingContext context)
 		{
-			if (IsFocus) {
+			if (HasFocus) {
 				context.DrawString (Region.Left, Region.Top, "<" + _text + ">", Region.Right);		
 			} else {
 				context.DrawString (Region.Left, Region.Top, "[" + _text + "]", Region.Right);		

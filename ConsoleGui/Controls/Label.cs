@@ -15,7 +15,7 @@ namespace ConsoleGui.Controls
 			get{ return _text; } 
 			set {
 				_text = value;
-				Invaldate ();
+				Invalidate ();
 			}
 		}
 
@@ -25,7 +25,7 @@ namespace ConsoleGui.Controls
 			get{ return _scrollbarVisible; }
 			set {
 				_scrollbarVisible = true;
-				Invaldate ();
+				Invalidate ();
 			}
 		}
 
@@ -37,7 +37,7 @@ namespace ConsoleGui.Controls
 		{
 			var subRegion = new Rect (Region.Left + 1, Region.Top + 1, Region.Right - 1, Region.Bottom - 2);
 
-			if (IsFocus) {
+			if (HasFocus) {
 
 				context.DrawThinBorder (Region);
 				context.DrawText (subRegion, _text, false, true, _scrollPosition, _scrollbarVisible);	
@@ -61,13 +61,13 @@ namespace ConsoleGui.Controls
 				case ConsoleKey.UpArrow:
 					if (_scrollPosition > 0) {
 						_scrollPosition--;
-						Invaldate ();
+						Invalidate ();
 					}
 					break;
 				case ConsoleKey.DownArrow:
 					if (_scrollPosition < totalLines.Count - 1) {
 						_scrollPosition++;
-						Invaldate ();
+						Invalidate ();
 					}
 					break;
 				}
