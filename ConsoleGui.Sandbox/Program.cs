@@ -45,12 +45,16 @@ namespace ConsoleGui.Sandbox
 
 		public static void Main (string[] args)
 		{
-			TestConsoleDrawingContext ();
+			//TestConsoleDrawingContext ();
 
 			Console.Clear ();
-
-			var app = new Application(new Dialogs.YesNoDialog("Are you happy?"));
+			var dialog = new Dialogs.YesNoDialog ("Are you happy?");
+			var app = new Application(dialog);
 			app.Run ();
+
+			if (dialog.Result == Dialogs.YesNoDialogResult.Yes) {
+				Console.WriteLine ("Glad to hear it!");
+			}
 
 		}
 	}

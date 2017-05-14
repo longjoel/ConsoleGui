@@ -55,17 +55,17 @@ namespace ConsoleGui
 		public virtual void HandleInput (ConsoleKeyInfo keyInfo)
 		{
 			// by default the tab key is going to switch the active control.
-			if(keyInfo.Key == ConsoleKey.Tab){
+			if (keyInfo.Key == ConsoleKey.Tab) {
 				if (_controlFocusedIndex != -1) {
 					Controls [_controlFocusedIndex].IsFocus = false;
-					Controls [_controlFocusedIndex].Invaldate();
+					Controls [_controlFocusedIndex].Invaldate ();
 				}
 
 				// if the shift modifier is used, go back up one line instead of down.
-				if (keyInfo.Modifiers.HasFlag( ConsoleModifiers.Shift)) {
+				if (keyInfo.Modifiers.HasFlag (ConsoleModifiers.Shift)) {
 					_controlFocusedIndex -= 1;
-					if (_controlFocusedIndex < 0 ) {
-						_controlFocusedIndex = Controls.Count-1;
+					if (_controlFocusedIndex < 0) {
+						_controlFocusedIndex = Controls.Count - 1;
 					}
 				} else {
 					_controlFocusedIndex += 1;
@@ -77,6 +77,12 @@ namespace ConsoleGui
 				Controls [_controlFocusedIndex].IsFocus = true;
 				Controls [_controlFocusedIndex].Invaldate ();
 
+				Invaldate ();
+
+			} else {
+				if (_controlFocusedIndex != -1) {
+					Controls [_controlFocusedIndex].HandleInput (keyInfo);
+				}
 			}
 			
 		}
@@ -95,10 +101,9 @@ namespace ConsoleGui
 		/// <param name="context">Context.</param>
 		public virtual void HandleRepaint (Interfaces.Drawing.IDrawingContext context)
 		{
+			context.DrawThickBorder (Region);
 			foreach (var c in Controls) {
-				if (c.IsInvalid) {
-					c.HandleRepaint (context);
-				}
+				c.HandleRepaint (context);
 			}
 			IsInvalid = false;
 		}

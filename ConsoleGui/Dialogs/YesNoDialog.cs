@@ -24,7 +24,7 @@ namespace ConsoleGui.Dialogs
 
 			YesButton = new ConsoleGui.Controls.Button () {
 				Text = "Yes",
-				Region = new ConsoleGui.Drawing.Rect (Region.Left + 1, Region.Bottom - 1, Region.Right, Region.Bottom - 1),
+				Region = new ConsoleGui.Drawing.Rect (Region.Left + 1, Region.Bottom-1, Region.Left+7, Region.Bottom - 1),
 				OnClick = new Action (() => {
 					Result = YesNoDialogResult.Yes;
 					Close();
@@ -33,7 +33,7 @@ namespace ConsoleGui.Dialogs
 
 			NoButton = new ConsoleGui.Controls.Button () {
 				Text = "No",
-				Region = new ConsoleGui.Drawing.Rect (YesButton.Region.Right + 2, Region.Bottom - 1, Region.Right, Region.Bottom - 1),
+				Region = new ConsoleGui.Drawing.Rect (YesButton.Region.Right + 1, Region.Bottom - 1, Region.Right+4, Region.Bottom - 1),
 				OnClick = new Action (() => {
 					Result = YesNoDialogResult.Yes;
 					Close();

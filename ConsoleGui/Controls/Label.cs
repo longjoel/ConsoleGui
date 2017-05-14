@@ -1,4 +1,5 @@
 ﻿using System;
+using ConsoleGui.Drawing;
 
 namespace ConsoleGui.Controls
 {
@@ -18,10 +19,14 @@ namespace ConsoleGui.Controls
 
 		public override void HandleRepaint (ConsoleGui.Interfaces.Drawing.IDrawingContext context)
 		{
+			var subRegion = new Rect (Region.Left + 1, Region.Top + 1, Region.Right - 1, Region.Bottom - 2);
+
 			if (IsFocus) {
-				context.DrawText (this.Region, _text, true, true, _scrollPosition,true);	
+
+				context.DrawThinBorder (Region);
+				context.DrawText (subRegion, _text, false, true, _scrollPosition,true);	
 			} else {
-				context.DrawText (this.Region, _text, false, true, _scrollPosition, false);
+				context.DrawText (subRegion, _text, false, true, _scrollPosition, false);
 			}
 
 

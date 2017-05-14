@@ -36,6 +36,7 @@ namespace ConsoleGui
 		/// <param name="context">Context.</param>
 		public virtual void HandleRepaint (Interfaces.Drawing.IDrawingContext context){
 			IsInvalid = false;
+
 		}
 	}
 }

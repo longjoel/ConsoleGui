@@ -13,6 +13,7 @@ namespace ConsoleGui
 
 		public Application (Form mainForm)
 		{
+			Console.CursorVisible = false;
 			_isExiting = false;
 			_drawingContext = new Drawing.ConsoleDrawingContext ();
 			Internals.WindowManager.Instance.Push (mainForm);
@@ -45,12 +46,14 @@ namespace ConsoleGui
 					}
 
 					if (areDirty) {
+						_drawingContext.FillRectangle (Internals.WindowManager.Instance.Forms [i].Region);
 						Internals.WindowManager.Instance.Forms [i].HandleRepaint (_drawingContext);
 						Internals.WindowManager.Instance.Forms [i].IsInvalid = false;
 					}
 				}
 
-			
+				_isExiting = !Internals.WindowManager.Instance.Forms.Any ();
+
 			}
 		}
 	}
