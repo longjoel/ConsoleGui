@@ -19,7 +19,8 @@ namespace ConsoleGui.Dialogs
 
 			MessageLabel = new ConsoleGui.Controls.Label (){
 				Region = new ConsoleGui.Drawing.Rect(Region.Left+1, Region.Top+1, Region.Right-1, Region.Bottom-2),
-				Text = message
+				Text = message,
+				ScrollbarVisible = true
 			};
 
 			YesButton = new ConsoleGui.Controls.Button () {
@@ -35,7 +36,7 @@ namespace ConsoleGui.Dialogs
 				Text = "No",
 				Region = new ConsoleGui.Drawing.Rect (YesButton.Region.Right + 1, Region.Bottom - 1, Region.Right+4, Region.Bottom - 1),
 				OnClick = new Action (() => {
-					Result = YesNoDialogResult.Yes;
+					Result = YesNoDialogResult.No;
 					Close();
 				})
 			};

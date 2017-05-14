@@ -10,8 +10,24 @@ namespace ConsoleGui.Controls
 	{
 		private string _text;
 		private int _scrollPosition;
-		public string Text{get{ return _text;} 
-			set{_text = value; Invaldate (); }}
+
+		public string Text {
+			get{ return _text; } 
+			set {
+				_text = value;
+				Invaldate ();
+			}
+		}
+
+		private bool _scrollbarVisible;
+
+		public bool ScrollbarVisible {
+			get{ return _scrollbarVisible; }
+			set {
+				_scrollbarVisible = true;
+				Invaldate ();
+			}
+		}
 
 		public Label ()
 		{
@@ -24,12 +40,11 @@ namespace ConsoleGui.Controls
 			if (IsFocus) {
 
 				context.DrawThinBorder (Region);
-				context.DrawText (subRegion, _text, false, true, _scrollPosition,true);	
+				context.DrawText (subRegion, _text, false, true, _scrollPosition, _scrollbarVisible);	
 			} else {
-				context.DrawText (subRegion, _text, false, true, _scrollPosition, false);
+				context.DrawText (subRegion, _text, false, true, _scrollPosition, _scrollbarVisible);
 			}
-
-
+				
 			base.HandleRepaint (context);
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleGui
 {
@@ -14,11 +15,12 @@ namespace ConsoleGui
 		/// <value>The region.</value>
 		public Drawing.Rect Region { get; set; }
 
+		private bool _isInvalid;
 		/// <summary>
 		/// Gets or sets a value indicating whether this instance is invalid.
 		/// </summary>
 		/// <value><c>true</c> if this instance is invalid; otherwise, <c>false</c>.</value>
-		public bool IsInvalid { get; set; }
+		public bool IsInvalid { get{ return _isInvalid || Controls.Any(c=> c.IsInvalid);} set {_isInvalid = value;} }
 
 		/// <summary>
 		/// Gets or sets the controls.

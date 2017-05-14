@@ -80,7 +80,13 @@ namespace ConsoleGui.Drawing
 			}
 		}
 
-		public void DrawString (int left, int top, string text, int right = -1, int offset = 0, int cursorLeft = -1, bool isOverwrite = false)
+		public void DrawString (int left, 
+			int top, 
+			string text, int 
+			right = -1, 
+			int offset = 0, 
+			int cursorLeft = -1, 
+			bool isOverwrite = false)
 		{
 			
 			Console.SetCursorPosition (left, top);
@@ -155,10 +161,7 @@ namespace ConsoleGui.Drawing
 			// if a scroll bar is needed, draw it. The scroll bar sits on the right part of the window.
 			if (drawScrollbarIfNeeded && lines.Count > textRegion.Bottom - textRegion.Top) {
 				if (!border) {
-					DrawString (region.Right, region.Bottom, "┴");
-					DrawString (region.Right, region.Top, "┬");
-
-					for (int y = region.Top + 1; y <= region.Bottom - 1; y++) {
+					for (int y = region.Top ; y <= region.Bottom; y++) {
 						DrawString (region.Right, y, "│");
 					}
 				}
