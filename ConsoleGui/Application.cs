@@ -36,6 +36,20 @@ namespace ConsoleGui
 						break;
 					}
 				}
+
+
+				var areDirty = false;
+				for (int i = 0; i < Internals.WindowManager.Instance.Forms.Count (); i++) {
+					if (Internals.WindowManager.Instance.Forms [i].IsInvalid) {
+						areDirty = true;
+					}
+
+					if (areDirty) {
+						Internals.WindowManager.Instance.Forms [i].HandleRepaint (_drawingContext);
+						Internals.WindowManager.Instance.Forms [i].IsInvalid = false;
+					}
+				}
+
 			
 			}
 		}

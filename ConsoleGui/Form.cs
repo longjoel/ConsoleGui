@@ -81,6 +81,14 @@ namespace ConsoleGui
 			
 		}
 
+		public void Show(){
+			Internals.WindowManager.Instance.Push (this);
+		}
+
+		public void Close(){
+			Internals.WindowManager.Instance.Close (this);
+		}
+
 		/// <summary>
 		/// Handles the repaint.
 		/// </summary>

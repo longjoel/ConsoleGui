@@ -19,6 +19,12 @@ namespace ConsoleGui.Internals
 
 		public void Push(Form form){
 			Forms.Add (form);
+			form.Invaldate ();
+		}
+
+		public void Close(Form form){
+			Forms.Remove (form);
+			Forms.ForEach (f => f.Invaldate ());
 		}
 
 		public void Pop(){

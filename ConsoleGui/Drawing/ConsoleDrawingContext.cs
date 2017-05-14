@@ -178,7 +178,7 @@ namespace ConsoleGui.Drawing
 		/// <param name="text">Text.</param>
 		/// <param name="border">If set to <c>true</c> border.</param>
 		/// <param name="wordwrap">If set to <c>true</c> wordwrap.</param>
-		public List<string> CalculateTextLines (ConsoleGui.Drawing.Rect region,
+		public static List<string> CalculateTextLines (ConsoleGui.Drawing.Rect region,
 			string text, 
 			bool border = true, 
 			bool wordwrap = true){

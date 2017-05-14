@@ -79,18 +79,6 @@ namespace ConsoleGui.Interfaces.Drawing
 		               bool isOverwrite = false
 		);
 
-		/// <summary>
-		/// Calculates the text lines.
-		/// </summary>
-		/// <returns>The text lines.</returns>
-		/// <param name="region">Region.</param>
-		/// <param name="text">Text.</param>
-		/// <param name="border">If set to <c>true</c> border.</param>
-		/// <param name="wordwrap">If set to <c>true</c> wordwrap.</param>
-		List<string> CalculateTextLines (ConsoleGui.Drawing.Rect region,
-		                                 string text, 
-		                                 bool border = true, 
-		                                 bool wordwrap = true);
 	}
 }
 

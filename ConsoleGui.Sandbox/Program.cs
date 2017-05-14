@@ -47,6 +47,11 @@ namespace ConsoleGui.Sandbox
 		{
 			TestConsoleDrawingContext ();
 
+			Console.Clear ();
+
+			var app = new Application(new Dialogs.YesNoDialog("Are you happy?"));
+			app.Run ();
+
 		}
 	}
 }
