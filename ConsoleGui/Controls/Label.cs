@@ -35,7 +35,7 @@ namespace ConsoleGui.Controls
 
 		public override void HandleRepaint (ConsoleGui.Interfaces.Drawing.IDrawingContext context)
 		{
-			var subRegion = new Rect (Region.Left + 1, Region.Top + 1, Region.Right - 1, Region.Bottom - 2);
+			var subRegion = new Rect (Region.Left + 1, Region.Top + 1, Region.Right - 1, Region.Bottom - 1);
 
 			if (HasFocus) {
 

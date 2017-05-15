@@ -45,23 +45,10 @@ namespace ConsoleGui.Sandbox
 
 		public static void Main (string[] args)
 		{
-			//TestConsoleDrawingContext ();
-
-			var eula = string.Join ("\n", 
-				"Thank you for choosing to use this software.",
-				"You are using this software under your own free will",
-				" and under no obligation.", "We however hope you enjoy using it.",
-				" Do you know what you are doing? Are you sure you want to use this?",
-				" I had a lot of fun writing it. It is really sweet.");
 
 			Console.Clear ();
-			var dialog = new Dialogs.YesNoDialog (eula);
-			var app = new Application(dialog);
+			var app = new Application(new MainForm());
 			app.Run ();
-
-			if (dialog.Result == Dialogs.YesNoDialogResult.Yes) {
-				Console.WriteLine ("Glad to hear it!");
-			}
 
 		}
 	}

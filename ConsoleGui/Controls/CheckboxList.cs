@@ -53,6 +53,23 @@ namespace ConsoleGui.Controls
 
 		public override void HandleInput (ConsoleKeyInfo keyInfo)
 		{
+			if (keyInfo.Key == ConsoleKey.UpArrow) {
+				if (_cursorPosition > 0) {
+					_cursorPosition--;
+					Invalidate ();
+				}
+			}
+
+			if (keyInfo.Key == ConsoleKey.DownArrow) {
+				if (_cursorPosition < _checkboxItems.Count - 1) {
+					_cursorPosition++;
+					Invalidate ();
+				}
+			}
+
+			if (keyInfo.Key == ConsoleKey.Spacebar || keyInfo.Key == ConsoleKey.Enter) {
+				_checkboxItems [_cursorPosition].IsChecked = !_checkboxItems [_cursorPosition].IsChecked;
+			}
 			
 			base.HandleInput (keyInfo);
 		}
@@ -74,12 +91,14 @@ namespace ConsoleGui.Controls
 				} else if (option.IsChecked) {
 					c = "✓"; // Is this terminal friendly?
 				}
-				sbMenuUptions.AppendLine ($"[{c}] {option.Text}");		
-
+				sbMenuUptions.AppendLine ($"[{c}] {option.Text}");	
 			}
 
-		
-			context.DrawText(new ConsoleGui.Drawing.Rect(Region.Left+1, Region.Top+1, Region.Right+1, Region.Bottom+1), sbMenuUptions.ToString(), false, false, _cursorPosition);
+			context.DrawText(new ConsoleGui.Drawing.Rect(
+				Region.Left+1, 
+				Region.Top+1, 
+				Region.Right-1, 
+				Region.Bottom-1), sbMenuUptions.ToString(), false, false, _cursorPosition);
 
 			base.HandleRepaint (context);
 		}
