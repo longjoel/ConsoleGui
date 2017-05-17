@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3482BDC3-943B-4EE9-8582-9125469BB0F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ConsoleGui</RootNamespace>
+    <AssemblyName>ConsoleGui</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Application.cs" />
+    <Compile Include="Form.cs" />
+    <Compile Include="Control.cs" />
+    <Compile Include="Internals\WindowManager.cs" />
+    <Compile Include="Drawing\Rect.cs" />
+    <Compile Include="Interfaces\Drawing\IDrawingContext.cs" />
+    <Compile Include="Drawing\ConsoleDrawingContext.cs" />
+    <Compile Include="Dialogs\YesNoDialog.cs" />
+    <Compile Include="Controls\Label.cs" />
+    <Compile Include="Controls\Button.cs" />
+    <Compile Include="Dialogs\YesNoDialogResult.cs" />
+    <Compile Include="Controls\CheckboxList.cs" />
+    <Compile Include="Controls\CheckBoxItem.cs" />
+    <Compile Include="Drawing\LayoutEngine.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Dialogs\" />
+    <Folder Include="Controls\" />
+    <Folder Include="Drawing\" />
+    <Folder Include="Internals\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Interfaces\Drawing\" />
+  </ItemGroup>
+</Project>
