@@ -45,6 +45,7 @@
     <Compile Include="Dialogs\YesNoDialogResult.cs" />
     <Compile Include="Controls\CheckboxList.cs" />
     <Compile Include="Controls\CheckBoxItem.cs" />
+    <Compile Include="Drawing\LayoutEngine.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

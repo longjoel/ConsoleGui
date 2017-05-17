@@ -28,7 +28,17 @@ namespace ConsoleGui
 		/// <value>The controls.</value>
 		public List<Control> Controls{ get; set; }
 
+		/// <summary>
+		/// Gets the control with focus.
+		/// </summary>
+		/// <value>The control with focus.</value>
 		public Control ControlWithFocus { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the layout engine.
+		/// </summary>
+		/// <value>The layout engine.</value>
+		public Drawing.LayoutEngine LayoutEngine { get; set; }
 
 		private int _controlFocusedIndex;
 
@@ -39,6 +49,7 @@ namespace ConsoleGui
 		{
 			IsInvalid = true;
 			Controls = new List<Control> ();
+			//LayoutEngine = new ConsoleGui.Drawing.LayoutEngine ();
 			_controlFocusedIndex = -1;
 		}
 
