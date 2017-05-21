@@ -75,6 +75,8 @@ namespace ConsoleGui.Interfaces.Drawing
 		/// <param name="allignment">Allignment.</param>
 		void DrawStringAlligned (string text, ConsoleGui.Drawing.Rect region, ConsoleGui.Drawing.TextAllignment allignment);
 
+		string StripDrawingChars (string text);
+
 		/// <summary>
 		/// Draws the text.
 		/// </summary>

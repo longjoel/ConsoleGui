@@ -13,10 +13,10 @@ namespace ConsoleGui.Dialogs
 		{
 			// Dialog windows set their own region.
 			this.Region = new ConsoleGui.Drawing.Rect (
-				(int)((double)Console.BufferWidth * .25),
-				(int)((double)Console.BufferHeight * .25),
-				(int)((double)Console.BufferWidth * .75),
-				(int)((double)Console.BufferHeight * .75));
+				(int)((double)Console.BufferWidth * .1),
+				(int)((double)Console.BufferHeight * .1),
+				(int)((double)Console.BufferWidth * .9),
+				(int)((double)Console.BufferHeight * .9));
 
 			// Layout engine for children controls.
 			this.LayoutEngine = new ConsoleGui.Drawing.TableLayoutEngine (this.Region.Interior);
@@ -26,14 +26,14 @@ namespace ConsoleGui.Dialogs
 
 
 			MessageLabel = new ConsoleGui.Drawing.ReadOnlyTextbox (){
-				Region = LayoutEngine.GetRegion(0,0,3,2),
+				Region = LayoutEngine.GetRegion(0,0,4,2),
 				Text = message,
 				ScrollbarVisible = true
 			};
 
 			YesButton = new ConsoleGui.Drawing.Button () {
 				Text = "Yes",
-				Region = LayoutEngine.GetRegion(3,0,2,1),
+				Region = LayoutEngine.GetRegion(4,0,1,1),
 				OnClick = new Action (() => {
 					Result = YesNoDialogResult.Yes;
 					Close();
@@ -42,7 +42,7 @@ namespace ConsoleGui.Dialogs
 
 			NoButton = new ConsoleGui.Drawing.Button () {
 				Text = "No",
-				Region = LayoutEngine.GetRegion(3,1,2,1),
+				Region = LayoutEngine.GetRegion(4,1,1,1),
 				OnClick = new Action (() => {
 					Result = YesNoDialogResult.No;
 					Close();

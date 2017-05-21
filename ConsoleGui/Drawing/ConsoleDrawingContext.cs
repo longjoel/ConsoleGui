@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ConsoleGui.Drawing
 {
 	public class ConsoleDrawingContext:Interfaces.Drawing.IDrawingContext
 	{
-		public const char BlinkingCursor = '▓';
+		public const string BeginFormattedTextInverted = "\x1b[7m";
+		public const string EndFormattedText = "\x1b[0m";
 
 		public ConsoleDrawingContext ()
 		{
@@ -82,12 +84,21 @@ namespace ConsoleGui.Drawing
 			}
 		}
 
-		public string Blink (string text){
+		public string Blink (string text)
+		{
 			return text;
 		}
 
-		public string Invert (string text){
-			return "\x1b[7m" + text + "\x1b[0m";
+		public string Invert (string text)
+		{
+			return  BeginFormattedTextInverted + text + EndFormattedText;
+		}
+
+		public string StripDrawingChars (string text)
+		{
+			return text
+				.Replace (BeginFormattedTextInverted, "")
+				.Replace (EndFormattedText, "");
 		}
 
 		/// <summary>
@@ -101,9 +112,14 @@ namespace ConsoleGui.Drawing
 			ConsoleGui.Drawing.Rect region, 
 			ConsoleGui.Drawing.TextAllignment allignment)
 		{
-			var clippedText = string.Concat (text.Take (region.Right - region.Left));
+			
+
+			var strippedTextLength = StripDrawingChars (text).Length;
+
+			var clippedText = string.Concat (text.Take ((region.Right - region.Left) + (text.Length - strippedTextLength)));
+
 			var center = region.Left + (region.Right - region.Left) / 2;
-			center = center - clippedText.Length / 2;
+			center = center - strippedTextLength / 2;
 
 			var middle = region.Top + (region.Bottom - region.Top) / 2;
 
@@ -131,15 +147,15 @@ namespace ConsoleGui.Drawing
 				break;
 
 			case TextAllignment.UpperRight:
-				DrawString (region.Right - clippedText.Length, region.Top, clippedText );
+				DrawString (region.Right - clippedText.Length, region.Top, clippedText);
 				break;
 
 			case TextAllignment.Right:
-				DrawString (region.Right - clippedText.Length, middle, clippedText );
+				DrawString (region.Right - clippedText.Length, middle, clippedText);
 				break;
 
 			case TextAllignment.LowerRight:
-				DrawString (region.Right - clippedText.Length, region.Bottom, clippedText );
+				DrawString (region.Right - clippedText.Length, region.Bottom, clippedText);
 				break;
 
 			}
