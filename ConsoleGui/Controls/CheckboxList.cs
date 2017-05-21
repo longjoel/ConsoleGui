@@ -84,21 +84,27 @@ namespace ConsoleGui.Controls
 
 			for (int i = 0; i < _checkboxItems.Count; i++) {
 				var option = _checkboxItems [i];
-				var c = " ";
+				var c = "";
 
 				if (i == _cursorPosition) {
-					c = "█";
-				} else if (option.IsChecked) {
-					c = "✓"; // Is this terminal friendly?
+					c = c+ Drawing.ConsoleDrawingContext.BlinkingCursor;
+				} 
+
+				if (option.IsChecked) {
+					c = c+"✓"; // Is this terminal friendly?
+				} else{
+					c =c+ " ";
 				}
 				sbMenuUptions.AppendLine ($"[{c}] {option.Text}");	
 			}
+
+			var scrollPosition = _cursorPosition;
 
 			context.DrawText(new ConsoleGui.Drawing.Rect(
 				Region.Left+1, 
 				Region.Top+1, 
 				Region.Right-1, 
-				Region.Bottom-1), sbMenuUptions.ToString(), false, false, _cursorPosition);
+				Region.Bottom-1), sbMenuUptions.ToString(), false, false, scrollPosition);
 
 			base.HandleRepaint (context);
 		}

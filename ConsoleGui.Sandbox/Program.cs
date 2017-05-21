@@ -44,17 +44,20 @@ namespace ConsoleGui.Sandbox
 		}
 
 		public static void Testlayout(){
-			var lm = new Drawing.LayoutEngine (new ConsoleGui.Drawing.Rect (
+			var lm = new Drawing.TableLayoutEngine (new ConsoleGui.Drawing.Rect (
 				         0, 0, Console.BufferWidth - 1, Console.BufferHeight - 1));
 
-			lm.Rows = new System.Collections.Generic.List<ConsoleGui.Drawing.LayoutRow>(){
-				new ConsoleGui.Drawing.LayoutRow(){Columns = 3},
-				new ConsoleGui.Drawing.LayoutRow(){Columns = 5}};
+			lm.LayoutRows = 2;
+			lm.LayoutCols = 5;
+
+			var lm2 = new Drawing.TableLayoutEngine (lm.GetRegion (0, 0, 1, 5));
+			lm2.LayoutRows = 1;
+			lm2.LayoutCols = 3;
 
 			var dc = new Drawing.ConsoleDrawingContext ();
-			dc.DrawThinBorder (lm.GetRegion (0, 0));
-			dc.DrawThinBorder (lm.GetRegion (0, 1));
-			dc.DrawThinBorder (lm.GetRegion (0, 2));
+			dc.DrawThinBorder (lm2.GetRegion (0, 0));
+			dc.DrawThinBorder (lm2.GetRegion (0, 1));
+			dc.DrawThinBorder (lm2.GetRegion (0, 2));
 
 			dc.DrawThinBorder (lm.GetRegion (1, 0));
 			dc.DrawThinBorder (lm.GetRegion (1, 2));
@@ -63,16 +66,23 @@ namespace ConsoleGui.Sandbox
 
 		}
 
+		public static void TestDialog(){
+			var app = new Application(new Dialogs.YesNoDialog("Wow!"));
+			app.Run ();
+		}
+
 		public static void Main (string[] args)
 		{
 
 			Console.Clear ();
 
-			Testlayout ();
+			//TestDialog ();
 
-			Console.ReadLine ();
-//			var app = new Application(new MainForm());
-//			app.Run ();
+			//Testlayout ();
+
+			//Console.ReadLine ();
+			var app = new Application(new MainForm());
+			app.Run ();
 
 		}
 	}

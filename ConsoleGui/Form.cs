@@ -15,6 +15,7 @@ namespace ConsoleGui
 		/// <value>The region.</value>
 		public Drawing.Rect Region { get; set; }
 
+
 		private bool _isInvalid;
 		/// <summary>
 		/// Gets or sets a value indicating whether this instance is invalid.
@@ -38,7 +39,7 @@ namespace ConsoleGui
 		/// Gets or sets the layout engine.
 		/// </summary>
 		/// <value>The layout engine.</value>
-		public Drawing.LayoutEngine LayoutEngine { get; set; }
+		public Drawing.TableLayoutEngine LayoutEngine { get; set; }
 
 		private int _controlFocusedIndex;
 

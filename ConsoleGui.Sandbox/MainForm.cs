@@ -12,17 +12,17 @@ namespace ConsoleGui.Sandbox
 				0, 0,
 				Console.BufferWidth - 1, Console.BufferHeight - 1);
 
+			var le = new Drawing.TableLayoutEngine (this.Region.Interior);
+			le.LayoutCols = 1;
+			le.LayoutRows = 5;
+
 			this.HelloLabel = new ConsoleGui.Controls.Label () {
 				Text = "Hello!",
-				Region = new ConsoleGui.Drawing.Rect (1, 1, Region.Right - 1, 3)
+				Region = le.GetRegion(0,0,1,1)
 			};
 
 			this.CheckboxList = new ConsoleGui.Controls.CheckboxList (){
-				Region = new ConsoleGui.Drawing.Rect(
-					1, 
-					this.HelloLabel.Region.Bottom+1, 
-					Region.Right-1, 
-					this.HelloLabel.Region.Bottom+7),
+				Region = le.GetRegion(1,0,4,1),
 			Text = "Pick Some Items"};
 			this.CheckboxList.Add (new ConsoleGui.Controls.CheckBoxItem (){Text = "Item1" });
 			this.CheckboxList.Add (new ConsoleGui.Controls.CheckBoxItem (){Text = "Item2" });

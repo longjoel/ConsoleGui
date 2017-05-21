@@ -38,7 +38,6 @@ namespace ConsoleGui.Controls
 			var subRegion = new Rect (Region.Left + 1, Region.Top + 1, Region.Right - 1, Region.Bottom - 1);
 
 			if (HasFocus) {
-
 				context.DrawThinBorder (Region);
 				context.DrawText (subRegion, _text, false, true, _scrollPosition, _scrollbarVisible);	
 			} else {
