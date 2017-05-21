@@ -6,6 +6,7 @@ namespace ConsoleGui
 	{
 		public Drawing.Rect Region { get; set; }
 
+		public bool CanHaveFocus { get; set; }
 		public bool HasFocus { get; set; }
 		public bool IsInvalid { get; set; }
 
@@ -13,6 +14,7 @@ namespace ConsoleGui
 
 		public Control ()
 		{
+			CanHaveFocus = false;
 		}
 
 		/// <summary>

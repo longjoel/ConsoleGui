@@ -75,19 +75,20 @@ namespace ConsoleGui
 					Controls [_controlFocusedIndex].Invalidate ();
 				}
 
-				// if the shift modifier is used, go back up one line instead of down.
-				if (keyInfo.Modifiers.HasFlag (ConsoleModifiers.Shift)) {
-					_controlFocusedIndex -= 1;
-					if (_controlFocusedIndex < 0) {
-						_controlFocusedIndex = Controls.Count - 1;
+				do {
+					// if the shift modifier is used, go back up one line instead of down.
+					if (keyInfo.Modifiers.HasFlag (ConsoleModifiers.Shift)) {
+						_controlFocusedIndex -= 1;
+						if (_controlFocusedIndex < 0) {
+							_controlFocusedIndex = Controls.Count - 1;
+						}
+					} else {
+						_controlFocusedIndex += 1;
+						if (_controlFocusedIndex >= Controls.Count) {
+							_controlFocusedIndex = 0;
+						}
 					}
-				} else {
-					_controlFocusedIndex += 1;
-					if (_controlFocusedIndex >= Controls.Count) {
-						_controlFocusedIndex = 0;
-					}
-				}
-
+				} while (!Controls [_controlFocusedIndex].CanHaveFocus);
 				Controls [_controlFocusedIndex].HasFocus = true;
 				Controls [_controlFocusedIndex].Invalidate ();
 

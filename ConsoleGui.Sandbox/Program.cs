@@ -76,13 +76,13 @@ namespace ConsoleGui.Sandbox
 
 			Console.Clear ();
 
-			//TestDialog ();
+			TestDialog ();
 
 			//Testlayout ();
 
 			//Console.ReadLine ();
-			var app = new Application(new MainForm());
-			app.Run ();
+			//var app = new Application(new MainForm());
+			//app.Run ();
 
 		}
 	}

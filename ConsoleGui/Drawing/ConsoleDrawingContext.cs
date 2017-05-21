@@ -82,10 +82,69 @@ namespace ConsoleGui.Drawing
 			}
 		}
 
-		private string Blink(string text){
-			
+		public string Blink (string text){
+			return text;
+		}
+
+		public string Invert (string text){
 			return "\x1b[7m" + text + "\x1b[0m";
 		}
+
+		/// <summary>
+		/// Draws the string alligned.
+		/// </summary>
+		/// <param name="text">Text.</param>
+		/// <param name="region">Region.</param>
+		/// <param name="allignment">Allignment.</param>
+		public void DrawStringAlligned (
+			string text, 
+			ConsoleGui.Drawing.Rect region, 
+			ConsoleGui.Drawing.TextAllignment allignment)
+		{
+			var clippedText = string.Concat (text.Take (region.Right - region.Left));
+			var center = region.Left + (region.Right - region.Left) / 2;
+			center = center - clippedText.Length / 2;
+
+			var middle = region.Top + (region.Bottom - region.Top) / 2;
+
+			switch (allignment) {
+
+			case TextAllignment.UpperLeft:
+				DrawString (region.Left, region.Top, clippedText);
+				break;
+			
+			case TextAllignment.LowerLeft:
+				DrawString (region.Left, region.Bottom, clippedText);
+				break;
+			
+			case TextAllignment.Left:
+				DrawString (region.Left, middle, clippedText);
+				break;
+			
+			case TextAllignment.Top:
+				DrawString (center, region.Top, clippedText);
+				break;
+
+
+			case TextAllignment.Center:
+				DrawString (center, middle, clippedText);
+				break;
+
+			case TextAllignment.UpperRight:
+				DrawString (region.Right - clippedText.Length, region.Top, clippedText );
+				break;
+
+			case TextAllignment.Right:
+				DrawString (region.Right - clippedText.Length, middle, clippedText );
+				break;
+
+			case TextAllignment.LowerRight:
+				DrawString (region.Right - clippedText.Length, region.Bottom, clippedText );
+				break;
+
+			}
+		}
+
 
 		public void DrawString (
 			int left, 
@@ -96,21 +155,6 @@ namespace ConsoleGui.Drawing
 			int cursorLeft = -1, 
 			bool isOverwrite = false)
 		{
-
-			if (text.Contains(BlinkingCursor)) {
-
-				var sbnewText = new StringBuilder ();
-				var subText = text.Split(new char[] {BlinkingCursor});
-				sbnewText.Append (subText [0]);
-				foreach (var s in subText.Skip(1)) {
-					var fc = s[0];
-					s.Remove (0);
-					sbnewText.Append(Blink(fc.ToString()));
-					sbnewText.Append(string.Concat(s.Skip(1)));
-				}
-				text = sbnewText.ToString ();
-			}
-
 			Console.SetCursorPosition (left, top);
 
 			if (right == -1) {

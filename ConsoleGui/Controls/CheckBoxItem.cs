@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleGui.Controls
+namespace ConsoleGui.Drawing
 {
 	public class CheckBoxItem
 	{

@@ -5,9 +5,9 @@ namespace ConsoleGui.Dialogs
 	public class YesNoDialog:Form
 	{
 		public YesNoDialogResult? Result { get; set; }
-		public Controls.Label MessageLabel { get; set; }
-		public Controls.Button YesButton { get; set; }
-		public Controls.Button NoButton { get; set; }
+		public ConsoleGui.Drawing.ReadOnlyTextbox MessageLabel { get; set; }
+		public ConsoleGui.Drawing.Button YesButton { get; set; }
+		public ConsoleGui.Drawing.Button NoButton { get; set; }
 
 		public YesNoDialog (string message)
 		{
@@ -19,34 +19,30 @@ namespace ConsoleGui.Dialogs
 				(int)((double)Console.BufferHeight * .75));
 
 			// Layout engine for children controls.
-			this.LayoutEngine = new ConsoleGui.Drawing.TableLayoutEngine (new Drawing.Rect(
-				this.Region.Left+1, 
-				this.Region.Top+1, 
-				this.Region.Right-1, 
-				this.Region.Bottom-1));
+			this.LayoutEngine = new ConsoleGui.Drawing.TableLayoutEngine (this.Region.Interior);
 
 			this.LayoutEngine.LayoutRows = 5;
-			this.LayoutEngine.LayoutCols = 1;
+			this.LayoutEngine.LayoutCols = 2;
 
 
-			MessageLabel = new ConsoleGui.Controls.Label (){
-				Region = LayoutEngine.GetRegion(0,0,3,1),
+			MessageLabel = new ConsoleGui.Drawing.ReadOnlyTextbox (){
+				Region = LayoutEngine.GetRegion(0,0,3,2),
 				Text = message,
 				ScrollbarVisible = true
 			};
 
-			YesButton = new ConsoleGui.Controls.Button () {
+			YesButton = new ConsoleGui.Drawing.Button () {
 				Text = "Yes",
-				Region = LayoutEngine.GetRegion(3,0,1,1),
+				Region = LayoutEngine.GetRegion(3,0,2,1),
 				OnClick = new Action (() => {
 					Result = YesNoDialogResult.Yes;
 					Close();
 				})
 			};
 
-			NoButton = new ConsoleGui.Controls.Button () {
+			NoButton = new ConsoleGui.Drawing.Button () {
 				Text = "No",
-				Region = LayoutEngine.GetRegion(4,0,1,1),
+				Region = LayoutEngine.GetRegion(3,1,2,1),
 				OnClick = new Action (() => {
 					Result = YesNoDialogResult.No;
 					Close();

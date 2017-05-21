@@ -35,6 +35,17 @@ namespace ConsoleGui.Interfaces.Drawing
 		/// <param name="statusText">Status text.</param>
 		void DrawThinBorder (ConsoleGui.Drawing.Rect region, string titleText = null, string statusText = null);
 
+		/// <summary>
+		/// Blink the specified text.
+		/// </summary>
+		/// <param name="text">Text.</param>
+		string Blink (string text);
+
+		/// <summary>
+		/// Invert the specified text.
+		/// </summary>
+		/// <param name="text">Text.</param>
+		string Invert (string text);
 
 		/// <summary>
 		/// Fill a rectangle with the default background color.
@@ -55,6 +66,14 @@ namespace ConsoleGui.Interfaces.Drawing
 		/// <param name="cursorLeft">Cursor left.</param>
 		/// <param name="isOverwrite">If set to <c>true</c> is overwrite.</param>
 		void DrawString (int left, int top, string text, int right = -1, int offset = 0, int cursorLeft = -1, bool isOverwrite = false);
+
+		/// <summary>
+		/// Draws the string alligned.
+		/// </summary>
+		/// <param name="text">Text.</param>
+		/// <param name="region">Region.</param>
+		/// <param name="allignment">Allignment.</param>
+		void DrawStringAlligned (string text, ConsoleGui.Drawing.Rect region, ConsoleGui.Drawing.TextAllignment allignment);
 
 		/// <summary>
 		/// Draws the text.

@@ -38,7 +38,7 @@ namespace ConsoleGui.Drawing
 			int top = _region.Top + (int)(((double)row / (double)LayoutRows)
 			          * (double)(_region.Bottom - _region.Top));
 			
-			if (top != 0)
+			if (row != 0)
 				top++;
 
 			int bottom = _region.Top + (int)(((double)(row + rowSpan) / (double)LayoutRows)
