@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleGui.Controls
+namespace ConsoleGui.Drawing
 {
 	public class Button:Control
 	{
@@ -16,8 +16,22 @@ namespace ConsoleGui.Controls
 			}
 		}
 
+		private TextAllignment _textAllignment;
+
+		public TextAllignment TextAllignment { 
+			get { 
+				return _textAllignment;
+			} 
+			set {
+				_textAllignment = value;
+				Invalidate ();
+			}
+		}
+
 		public Button ()
 		{
+			CanHaveFocus = true;
+			TextAllignment = TextAllignment.Center;
 		}
 
 		public override void HandleInput (ConsoleKeyInfo keyInfo)
@@ -34,10 +48,13 @@ namespace ConsoleGui.Controls
 
 		public override void HandleRepaint (ConsoleGui.Interfaces.Drawing.IDrawingContext context)
 		{
+			context.DrawThinBorder (this.Region);
 			if (HasFocus) {
-				context.DrawString (Region.Left, Region.Top, "<" + _text + ">", Region.Right);		
+				context.DrawStringAlligned(context.Invert("<" + _text + ">"), this.Region.Interior, this.TextAllignment);		
 			} else {
-				context.DrawString (Region.Left, Region.Top, "[" + _text + "]", Region.Right);		
+				context.DrawStringAlligned("<" + _text + ">", this.Region.Interior, this.TextAllignment);		
+
+						
 			}
 
 			base.HandleRepaint (context);

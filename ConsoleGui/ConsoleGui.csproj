@@ -40,12 +40,14 @@
     <Compile Include="Interfaces\Drawing\IDrawingContext.cs" />
     <Compile Include="Drawing\ConsoleDrawingContext.cs" />
     <Compile Include="Dialogs\YesNoDialog.cs" />
-    <Compile Include="Controls\Label.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Dialogs\YesNoDialogResult.cs" />
     <Compile Include="Controls\CheckboxList.cs" />
     <Compile Include="Controls\CheckBoxItem.cs" />
-    <Compile Include="Drawing\LayoutEngine.cs" />
+    <Compile Include="Drawing\TableLayoutEngine.cs" />
+    <Compile Include="Controls\ReadOnlyTextbox.cs" />
+    <Compile Include="Controls\Label.cs" />
+    <Compile Include="Drawing\TextAllignment.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

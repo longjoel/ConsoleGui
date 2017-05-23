@@ -12,6 +12,20 @@ namespace ConsoleGui.Drawing
 
 		public int Right { get; set; }
 
+		/// <summary>
+		/// The interior region of the form.
+		/// </summary>
+		/// <value>The interior.</value>
+		public Drawing.Rect Interior { 
+			get { 
+				return new Drawing.Rect (
+					Left + 1, 
+					Top + 1, 
+					Right - 1, 
+					Bottom - 1); 
+			} 
+		}
+
 		public Rect (int left, int top, int right, int bottom)
 		{
 			Top = top;

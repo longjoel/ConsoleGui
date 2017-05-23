@@ -2,11 +2,15 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ConsoleGui.Drawing
 {
 	public class ConsoleDrawingContext:Interfaces.Drawing.IDrawingContext
 	{
+		public const string BeginFormattedTextInverted = "\x1b[7m";
+		public const string EndFormattedText = "\x1b[0m";
+
 		public ConsoleDrawingContext ()
 		{
 		}
@@ -30,8 +34,8 @@ namespace ConsoleGui.Drawing
 			DrawString (region.Left, region.Bottom, "╚");
 			DrawString (region.Right, region.Bottom, "╝");
 
-			DrawString (region.Left + 1, region.Top, string.Concat(Enumerable.Repeat ('═', region.Right - region.Left - 1)));
-			DrawString (region.Left + 1, region.Bottom, string.Concat(Enumerable.Repeat ('═', region.Right - region.Left - 1)));
+			DrawString (region.Left + 1, region.Top, string.Concat (Enumerable.Repeat ('═', region.Right - region.Left - 1)));
+			DrawString (region.Left + 1, region.Bottom, string.Concat (Enumerable.Repeat ('═', region.Right - region.Left - 1)));
 
 			for (int y = region.Top + 1; y <= region.Bottom - 1; y++) {
 				DrawString (region.Left, y, "║");
@@ -57,8 +61,8 @@ namespace ConsoleGui.Drawing
 			DrawString (region.Left, region.Bottom, "└");
 			DrawString (region.Right, region.Bottom, "┘");
 
-			DrawString (region.Left + 1, region.Top, string.Concat(Enumerable.Repeat ('─', region.Right - region.Left - 1)));
-			DrawString (region.Left + 1, region.Bottom, string.Concat(Enumerable.Repeat ('─', region.Right - region.Left - 1)));
+			DrawString (region.Left + 1, region.Top, string.Concat (Enumerable.Repeat ('─', region.Right - region.Left - 1)));
+			DrawString (region.Left + 1, region.Bottom, string.Concat (Enumerable.Repeat ('─', region.Right - region.Left - 1)));
 
 			for (int y = region.Top + 1; y <= region.Bottom - 1; y++) {
 				DrawString (region.Left, y, "│");
@@ -80,33 +84,116 @@ namespace ConsoleGui.Drawing
 			}
 		}
 
-		public void DrawString (int left, 
+		public string Blink (string text)
+		{
+			return text;
+		}
+
+		public string Invert (string text)
+		{
+			return  BeginFormattedTextInverted + text + EndFormattedText;
+		}
+
+		public string StripDrawingChars (string text)
+		{
+			return text
+				.Replace (BeginFormattedTextInverted, "")
+				.Replace (EndFormattedText, "");
+		}
+
+		/// <summary>
+		/// Draws the string alligned.
+		/// </summary>
+		/// <param name="text">Text.</param>
+		/// <param name="region">Region.</param>
+		/// <param name="allignment">Allignment.</param>
+		public void DrawStringAlligned (
+			string text, 
+			ConsoleGui.Drawing.Rect region, 
+			ConsoleGui.Drawing.TextAllignment allignment)
+		{
+			
+
+			var strippedTextLength = StripDrawingChars (text).Length;
+
+			var clippedText = string.Concat (text.Take ((region.Right - region.Left) + (text.Length - strippedTextLength)));
+
+			var center = region.Left + (region.Right - region.Left) / 2;
+			center = center - strippedTextLength / 2;
+
+			var middle = region.Top + (region.Bottom - region.Top) / 2;
+
+			switch (allignment) {
+
+			case TextAllignment.UpperLeft:
+				DrawString (region.Left, region.Top, clippedText);
+				break;
+			
+			case TextAllignment.LowerLeft:
+				DrawString (region.Left, region.Bottom, clippedText);
+				break;
+			
+			case TextAllignment.Left:
+				DrawString (region.Left, middle, clippedText);
+				break;
+			
+			case TextAllignment.Top:
+				DrawString (center, region.Top, clippedText);
+				break;
+
+
+			case TextAllignment.Center:
+				DrawString (center, middle, clippedText);
+				break;
+
+			case TextAllignment.Bottom:
+				DrawString (center, region.Bottom, clippedText);
+				break;
+
+			case TextAllignment.UpperRight:
+				DrawString (region.Right - clippedText.Length, region.Top, clippedText);
+				break;
+
+			case TextAllignment.Right:
+				DrawString (region.Right - clippedText.Length, middle, clippedText);
+				break;
+
+			case TextAllignment.LowerRight:
+				DrawString (region.Right - clippedText.Length, region.Bottom, clippedText);
+				break;
+
+			}
+		}
+
+
+		public void DrawString (
+			int left, 
 			int top, 
-			string text, int 
-			right = -1, 
+			string text, 
+			int right = -1, 
 			int offset = 0, 
 			int cursorLeft = -1, 
 			bool isOverwrite = false)
 		{
-			
 			Console.SetCursorPosition (left, top);
 
 			if (right == -1) {
-				Console.Write (string.Concat(text.Skip (offset)));
+				Console.Write (string.Concat (text.Skip (offset)));
 			} else {
-				Console.Write (string.Concat(text.Skip (offset).Take (right - left)));
+				Console.Write (string.Concat (text.Skip (offset).Take (right - left)));
 			}
 		}
 
-		public void DrawText (ConsoleGui.Drawing.Rect region, 
-		                      string text, 
-		                      bool border = true,
-		                      bool wordWrap = true,
-		                      int lineOffset = 0,
-		                      bool drawScrollbarIfNeeded = true,
-		                      int cursorLeft = -1,
-		                      int cursorTop = -1,
-		                      bool isOverwrite = false)
+		public void DrawText (
+			ConsoleGui.Drawing.Rect region, 
+			string text, 
+			bool border = true,
+			bool wordWrap = true,
+			int lineOffset = 0,
+			bool drawScrollbarIfNeeded = true,
+			int cursorLeft = -1,
+			int cursorTop = -1,
+			bool isOverwrite = false)
 		{
 			var lines = new List<string> ();
 
@@ -134,7 +221,7 @@ namespace ConsoleGui.Drawing
 
 				var sb = new StringBuilder ();
 				for (int i = 0; i < splitText.Length; i++) {
-					if (sb.Length + splitText [i].Length <= textRegion.Right - textRegion.Left -1) {
+					if (sb.Length + splitText [i].Length <= textRegion.Right - textRegion.Left - 1) {
 						sb.Append (splitText [i]); 
 						sb.Append (" ");
 					} else {
@@ -151,7 +238,7 @@ namespace ConsoleGui.Drawing
 			}
 
 			// scroll the text.
-			var actualLines = lines.Skip (lineOffset).Take (textRegion.Bottom - textRegion.Top+1).ToList ();
+			var actualLines = lines.Skip (lineOffset).Take (textRegion.Bottom - textRegion.Top + 1).ToList ();
 
 			// draw the text line by line.
 			for (int i = 0; i < actualLines.Count; i++) {
@@ -161,12 +248,12 @@ namespace ConsoleGui.Drawing
 			// if a scroll bar is needed, draw it. The scroll bar sits on the right part of the window.
 			if (drawScrollbarIfNeeded && lines.Count > textRegion.Bottom - textRegion.Top) {
 				if (!border) {
-					for (int y = region.Top ; y <= region.Bottom; y++) {
+					for (int y = region.Top; y <= region.Bottom; y++) {
 						DrawString (region.Right, y, "│");
 					}
 				}
 
-				var cursorY = textRegion.Top + (int)( ((double)lineOffset / (double)lines.Count) * (double)(textRegion.Bottom-textRegion.Top));
+				var cursorY = textRegion.Top + (int)(((double)lineOffset / (double)lines.Count) * (double)(textRegion.Bottom - textRegion.Top));
 			
 				DrawString (region.Right, cursorY, "█");
 			}
@@ -182,9 +269,10 @@ namespace ConsoleGui.Drawing
 		/// <param name="border">If set to <c>true</c> border.</param>
 		/// <param name="wordwrap">If set to <c>true</c> wordwrap.</param>
 		public static List<string> CalculateTextLines (ConsoleGui.Drawing.Rect region,
-			string text, 
-			bool border = true, 
-			bool wordwrap = true){
+		                                               string text, 
+		                                               bool border = true, 
+		                                               bool wordwrap = true)
+		{
 			var lines = new List<string> ();
 
 			var textRegion = new Rect (region.Left, region.Top, region.Right, region.Bottom);
@@ -207,7 +295,7 @@ namespace ConsoleGui.Drawing
 
 				var sb = new StringBuilder ();
 				for (int i = 0; i < splitText.Length; i++) {
-					if (sb.Length + splitText [i].Length <= textRegion.Right - textRegion.Left -1) {
+					if (sb.Length + splitText [i].Length <= textRegion.Right - textRegion.Left - 1) {
 						sb.Append (splitText [i]); 
 						sb.Append (" ");
 					} else {
