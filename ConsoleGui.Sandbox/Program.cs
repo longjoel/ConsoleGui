@@ -75,8 +75,13 @@ namespace ConsoleGui.Sandbox
 		{
 
 			Console.Clear ();
+			var gt = new GridTest ();
+			gt.Region = new ConsoleGui.Drawing.Rect (0, 0, Console.BufferWidth - 1, Console.BufferHeight - 1);
+			var app = new Application(gt);
+			app.Run ();
 
-			TestDialog ();
+
+			//TestDialog ();
 
 			//Testlayout ();
 

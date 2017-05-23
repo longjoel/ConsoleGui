@@ -146,6 +146,10 @@ namespace ConsoleGui.Drawing
 				DrawString (center, middle, clippedText);
 				break;
 
+			case TextAllignment.Bottom:
+				DrawString (center, region.Bottom, clippedText);
+				break;
+
 			case TextAllignment.UpperRight:
 				DrawString (region.Right - clippedText.Length, region.Top, clippedText);
 				break;
