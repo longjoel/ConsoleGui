@@ -33,6 +33,13 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MainForm.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleGui\ConsoleGui.csproj">
+      <Project>{3482BDC3-943B-4EE9-8582-9125469BB0F2}</Project>
+      <Name>ConsoleGui</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

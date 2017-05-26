@@ -16,6 +16,8 @@ namespace ConsoleGui
 		public Drawing.Rect Region { get; set; }
 
 
+		private int _controlFocusedIndex;
+
 		private bool _isInvalid;
 
 		/// <summary>
@@ -36,13 +38,7 @@ namespace ConsoleGui
 		/// <value>The control with focus.</value>
 		public Control ControlWithFocus { get; private set; }
 
-		/// <summary>
-		/// Gets or sets the layout engine.
-		/// </summary>
-		/// <value>The layout engine.</value>
-		public Drawing.TableLayoutEngine LayoutEngine { get; set; }
 
-		private int _controlFocusedIndex;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConsoleGui.Form"/> class.
@@ -157,6 +153,19 @@ namespace ConsoleGui
 		/// Anything that needs to be handled before the window is closed closed.
 		/// </summary>
 		public virtual void HandleClose (){
+		}
+
+		/// <summary>
+		/// Initialize the form.
+		/// </summary>
+		public void Initialize(){
+			OnInitialize ();
+		}
+
+		/// <summary>
+		/// Callback to initialize the form.
+		/// </summary>
+		public virtual void OnInitialize(){
 		}
 	}
 }

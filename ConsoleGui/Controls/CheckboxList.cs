@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace ConsoleGui.Drawing
+namespace ConsoleGui.Controls
 {
 	public class CheckboxList:Control
 	{

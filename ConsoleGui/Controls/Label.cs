@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleGui
+namespace ConsoleGui.Controls
 {
 	public class Label:Control
 	{

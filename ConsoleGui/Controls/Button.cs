@@ -1,6 +1,7 @@
 ﻿using System;
+using ConsoleGui.Drawing;
 
-namespace ConsoleGui.Drawing
+namespace ConsoleGui.Controls
 {
 	public class Button:Control
 	{

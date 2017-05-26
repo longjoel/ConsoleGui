@@ -5,38 +5,42 @@ namespace ConsoleGui.Dialogs
 	public class YesNoDialog:Form
 	{
 		public YesNoDialogResult? Result { get; set; }
-		public ConsoleGui.Drawing.ReadOnlyTextbox MessageLabel { get; set; }
-		public ConsoleGui.Drawing.Button YesButton { get; set; }
-		public ConsoleGui.Drawing.Button NoButton { get; set; }
+		public ConsoleGui.Controls.ReadOnlyTextbox MessageLabel { get; set; }
+		public ConsoleGui.Controls.Button YesButton { get; set; }
+		public ConsoleGui.Controls.Button NoButton { get; set; }
 
+		private string _message;
 		public YesNoDialog (string message)
 		{
-			
+			_message = message;
+
+		}
+
+		public override void OnInitialize ()
+		{
+
 			// Layout engine for children controls.
-			this.LayoutEngine = new ConsoleGui.Drawing.TableLayoutEngine (this.Region.Interior);
-
-			this.LayoutEngine.LayoutRows = 5;
-			this.LayoutEngine.LayoutCols = 2;
+			var le = new ConsoleGui.Drawing.TableLayoutEngine (this.Region.Interior, 2,5);
 
 
-			MessageLabel = new ConsoleGui.Drawing.ReadOnlyTextbox (){
-				Region = LayoutEngine.GetRegion(0,0,4,2),
-				Text = message,
+			MessageLabel = new ConsoleGui.Controls.ReadOnlyTextbox (){
+				Region = le.GetRegion(0,0,2,4),
+				Text = _message,
 				ScrollbarVisible = true
 			};
 
-			YesButton = new ConsoleGui.Drawing.Button () {
+			YesButton = new ConsoleGui.Controls.Button () {
 				Text = "Yes",
-				Region = LayoutEngine.GetRegion(4,0,1,1),
+				Region = le.GetRegion(0,4,1,1),
 				OnClick = new Action (() => {
 					Result = YesNoDialogResult.Yes;
 					Close();
 				})
 			};
 
-			NoButton = new ConsoleGui.Drawing.Button () {
+			NoButton = new ConsoleGui.Controls.Button () {
 				Text = "No",
-				Region = LayoutEngine.GetRegion(4,1,1,1),
+				Region = le.GetRegion(1,4,1,1),
 				OnClick = new Action (() => {
 					Result = YesNoDialogResult.No;
 					Close();
@@ -46,6 +50,7 @@ namespace ConsoleGui.Dialogs
 			this.Controls.Add (MessageLabel);
 			this.Controls.Add (YesButton);
 			this.Controls.Add (NoButton);
+			base.OnInitialize ();
 		}
 
 

@@ -6,7 +6,8 @@ namespace ConsoleGui.Samples
 	{
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Hello World!");
+			var app = new Application (new MainForm ());
+			app.Run ();
 		}
 	}
 }

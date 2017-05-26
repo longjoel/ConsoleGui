@@ -1,7 +1,7 @@
 ﻿using System;
 using ConsoleGui.Drawing;
 
-namespace ConsoleGui.Drawing
+namespace ConsoleGui.Controls
 {
 	/// <summary>
 	/// Simple Basic Label

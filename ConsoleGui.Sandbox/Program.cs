@@ -45,23 +45,19 @@ namespace ConsoleGui.Sandbox
 
 		public static void Testlayout(){
 			var lm = new Drawing.TableLayoutEngine (new ConsoleGui.Drawing.Rect (
-				         0, 0, Console.BufferWidth - 1, Console.BufferHeight - 1));
+				         0, 0, Console.BufferWidth - 1, Console.BufferHeight - 1),2,5);
+			
 
-			lm.LayoutRows = 2;
-			lm.LayoutCols = 5;
-
-			var lm2 = new Drawing.TableLayoutEngine (lm.GetRegion (0, 0, 1, 5));
-			lm2.LayoutRows = 1;
-			lm2.LayoutCols = 3;
+			var lm2 = new Drawing.TableLayoutEngine (lm.GetRegion (0, 0, 1, 5),1,3);
 
 			var dc = new Drawing.ConsoleDrawingContext ();
 			dc.DrawThinBorder (lm2.GetRegion (0, 0));
-			dc.DrawThinBorder (lm2.GetRegion (0, 1));
-			dc.DrawThinBorder (lm2.GetRegion (0, 2));
+			dc.DrawThinBorder (lm2.GetRegion (1, 0));
+			dc.DrawThinBorder (lm2.GetRegion (2, 0));
 
-			dc.DrawThinBorder (lm.GetRegion (1, 0));
-			dc.DrawThinBorder (lm.GetRegion (1, 2));
-			dc.DrawThinBorder (lm.GetRegion (1, 4));
+			dc.DrawThinBorder (lm.GetRegion (0,1));
+			dc.DrawThinBorder (lm.GetRegion (2,1));
+			dc.DrawThinBorder (lm.GetRegion (4,1));
 
 
 		}

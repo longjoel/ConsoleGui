@@ -19,6 +19,7 @@ namespace ConsoleGui.Internals
 
 		public void Push(Form form){
 			Forms.Add (form);
+			form.Initialize ();
 			form.Invalidate ();
 		}
 

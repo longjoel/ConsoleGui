@@ -12,14 +12,11 @@ namespace ConsoleGui.Sandbox
 
 		public override void HandleRepaint (ConsoleGui.Interfaces.Drawing.IDrawingContext context)
 		{
-			var le = new Drawing.TableLayoutEngine (this.Region.Interior);
+			var le = new Drawing.TableLayoutEngine (this.Region.Interior,3,3);
 
-			le.LayoutRows = 3;
-			le.LayoutCols = 3;
-
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 3; j++) {
-					int k = i * 3 + j;
+			for (int j = 0; j < 3; j++) {
+				for (int i = 0; i < 3; i++) {
+					int k = j * 3 + i;
 					context.DrawThinBorder (le.GetRegion (i, j));
 					context.DrawStringAlligned ("Text", le.GetRegion (i, j).Interior, (Drawing.TextAllignment)k);
 				}

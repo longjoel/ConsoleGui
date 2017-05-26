@@ -3,46 +3,69 @@ using System.Collections.Generic;
 
 namespace ConsoleGui.Drawing
 {
-
-
-	public class LayoutRow
-	{
-		public int Columns { get; set; }
-	}
-
+	/// <summary>
+	/// Table layout engine.
+	/// </summary>
 	public class TableLayoutEngine
 	{
-		private Rect _region;
+		/// <summary>
+		/// Gets the region.
+		/// </summary>
+		/// <value>The region.</value>
+		public Rect Region{ get; private set; }
 
-		public int LayoutRows { get; set; }
+		/// <summary>
+		/// Gets the layout rows.
+		/// </summary>
+		/// <value>The layout rows.</value>
+		public int LayoutRows { get; private set; }
 
-		public int LayoutCols { get; set; }
+		/// <summary>
+		/// Gets the layout cols.
+		/// </summary>
+		/// <value>The layout cols.</value>
+		public int LayoutCols { get; private set; }
 
-		public TableLayoutEngine (Rect region)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ConsoleGui.Drawing.TableLayoutEngine"/> class.
+		/// </summary>
+		/// <param name="region">Region.</param>
+		/// <param name="numCols">Number cols.</param>
+		/// <param name="numRows">Number rows.</param>
+		public TableLayoutEngine (Rect region, int numCols, int numRows)
 		{
-			_region = region;
-
+			Region = region;
+			LayoutRows = numRows;
+			LayoutCols = numCols;
 		}
 
-		public Rect GetRegion (int row, int col, int rowSpan = 1, int colSpan = 1)
+		/// <summary>
+		/// Gets the region.
+		/// </summary>
+		/// <returns>The region.</returns>
+		/// <param name="col">Col.</param>
+		/// <param name="row">Row.</param>
+		/// <param name="colSpan">Col span.</param>
+		/// <param name="rowSpan">Row span.</param>
+		public Rect GetRegion (int col, int row, int colSpan = 1, int rowSpan = 1)
 		{
-			int left = _region.Left + (int)(((double)col / (double)LayoutCols)
-			           * (double)(_region.Right - _region.Left));
+			int left = Region.Left + (int)(((double)col / (double)LayoutCols)
+			           * (double)(Region.Right - Region.Left));
 				
 			if (col != 0)
 				left++;
 
-			int right = _region.Left + (int)(((double)(col + colSpan) / (double)LayoutCols)
-			            * (double)(_region.Right - _region.Left));
+			int right = Region.Left + (int)(((double)(col + colSpan) / (double)LayoutCols)
+			            * (double)(Region.Right - Region.Left));
 			
-			int top = _region.Top + (int)(((double)row / (double)LayoutRows)
-			          * (double)(_region.Bottom - _region.Top));
+			int top = Region.Top + (int)(((double)row / (double)LayoutRows)
+			          * (double)(Region.Bottom - Region.Top));
 			
 			if (row != 0)
 				top++;
 
-			int bottom = _region.Top + (int)(((double)(row + rowSpan) / (double)LayoutRows)
-			             * (double)(_region.Bottom - _region.Top));
+			int bottom = Region.Top + (int)(((double)(row + rowSpan) / (double)LayoutRows)
+			             * (double)(Region.Bottom - Region.Top));
 			
 			return new Rect (left, top, right, bottom);
 		}
