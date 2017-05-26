@@ -13,7 +13,7 @@ namespace ConsoleGui.Samples
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConsoleGui.Samples.MainForm"/> class.
 		/// </summary>
-		public MainForm ():base()
+		public MainForm () : base ()
 		{
 
 		}
@@ -35,32 +35,38 @@ namespace ConsoleGui.Samples
 			var le = new ConsoleGui.Drawing.TableLayoutEngine (this.Region.Interior, 2, 6);
 
 			// Here I am creating a simple header for the top of the screen.
-			var lblHeader = new Label{
+			var lblHeader = new Label {
 
-				// Set the text allignment to the middle of the label
-				TextAllignment = TextAllignment.Center,
+				// Set the text allignment to the bottom of the label
+				TextAllignment = TextAllignment.Bottom,
 
 				// Set the text field to indicate what is being set.
-				Text= "ConsoleGui Samples Demo. Press `Esc` to quit.",
+				Text = "ConsoleGui Samples Demo. Press `Esc` to quit.",
 
 				// Use the layout engine to figure out how where to draw the thing.
-				Region = le.GetRegion(0,0,2,1)
+				Region = le.GetRegion (0, 0, 2, 1)
 			};
 
 			// Add the control to the built in control collection.
 			this.Controls.Add (lblHeader);
 
 			// Demonstrate a simple read only multi textbox
-			var roTextInstructions = new ReadOnlyTextbox{
+			var roTextInstructions = new ReadOnlyTextbox {
+
+				// Scroll bar indicates where in the text box you are.
+				ScrollbarVisible = true,
 
 				// Again, use the layout engine to get the region to draw it in
-				Region = le.GetRegion(0,1,2,2),
+				Region = le.GetRegion (0, 1, 2, 2),
 
 				// Display some text.
-				Text = string.Join("",
+				Text = string.Join ("\n",
 					"Instructions:",
-					"\n"+"Use Tab to cycle between fields. Press `Esc` to exit. For a read only text box ",
-					"press up or down to scroll. Not all controls will be scrollable.")
+					"Use Tab to cycle between fields. Press `Esc` to exit.",
+					"For a read only text box press up or down to scroll. Not all controls will be scrollable.",
+					"This one should be though.",
+					"", "", "",
+					"There we are!")
 			};
 
 			this.Controls.Add (roTextInstructions);
