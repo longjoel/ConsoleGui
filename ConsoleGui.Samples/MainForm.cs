@@ -32,7 +32,7 @@ namespace ConsoleGui.Samples
 			// The layout engine is a completely optional component to allow for simple setup of 
 			// controls. You could generate the regions by hand, but you typically have no idea 
 			// how much room you actually have.
-			var le = new ConsoleGui.Drawing.TableLayoutEngine (this.Region.Interior, 2, 6);
+			var layout = new ConsoleGui.Drawing.TableLayoutEngine (this.Region.Interior, 2, 6);
 
 			// Here I am creating a simple header for the top of the screen.
 			var lblHeader = new Label {
@@ -44,7 +44,7 @@ namespace ConsoleGui.Samples
 				Text = "ConsoleGui Samples Demo. Press `Esc` to quit.",
 
 				// Use the layout engine to figure out how where to draw the thing.
-				Region = le.GetRegion (0, 0, 2, 1)
+				Region = layout.GetRegion (0, 0, 2, 1)
 			};
 
 			// Add the control to the built in control collection.
@@ -57,7 +57,7 @@ namespace ConsoleGui.Samples
 				ScrollbarVisible = true,
 
 				// Again, use the layout engine to get the region to draw it in
-				Region = le.GetRegion (0, 1, 2, 2),
+				Region = layout.GetRegion (0, 1, 2, 2),
 
 				// Display some text.
 				Text = string.Join ("\n",
@@ -75,7 +75,7 @@ namespace ConsoleGui.Samples
 			var showDialogButton = new Button {
 				TextAllignment = TextAllignment.Center,
 				Text = "Show a yes or no dialog.",
-				Region = le.GetRegion (0, 3, 1, 1),
+				Region = layout.GetRegion (0, 3, 1, 1),
 				OnClick = () => {
 					new Dialogs.YesNoDialog ("Show a simple dialog.").ShowDialog ();
 				},

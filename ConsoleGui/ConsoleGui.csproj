@@ -48,6 +48,7 @@
     <Compile Include="Controls\ReadOnlyTextbox.cs" />
     <Compile Include="Controls\Label.cs" />
     <Compile Include="Drawing\TextAllignment.cs" />
+    <Compile Include="Controls\Textbox.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
