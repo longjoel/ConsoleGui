@@ -17,11 +17,12 @@ namespace ConsoleGui
 
 
 		private bool _isInvalid;
+
 		/// <summary>
 		/// Gets or sets a value indicating whether this instance is invalid.
 		/// </summary>
 		/// <value><c>true</c> if this instance is invalid; otherwise, <c>false</c>.</value>
-		public bool IsInvalid { get{ return _isInvalid || Controls.Any(c=> c.IsInvalid);} set {_isInvalid = value;} }
+		public bool IsInvalid { get { return _isInvalid || Controls.Any (c => c.IsInvalid); } set { _isInvalid = value; } }
 
 		/// <summary>
 		/// Gets or sets the controls.
@@ -102,11 +103,40 @@ namespace ConsoleGui
 			
 		}
 
-		public void Show(){
+		/// <summary>
+		/// Shows the form, taking up the entire console area.
+		/// </summary>
+		public void ShowForm ()
+		{
+			this.Region = new ConsoleGui.Drawing.Rect (
+				0, 
+				0, 
+				Console.BufferWidth - 1, 
+				Console.BufferHeight - 1);
+
 			Internals.WindowManager.Instance.Push (this);
 		}
 
-		public void Close(){
+		/// <summary>
+		/// Shows form as a dialog, taking up about 80% of screen realestate.
+		/// </summary>
+		public void ShowDialog ()
+		{
+			this.Region = new ConsoleGui.Drawing.Rect (
+				(int)((double)Console.BufferWidth * .1),
+				(int)((double)Console.BufferHeight * .1),
+				(int)((double)Console.BufferWidth * .9),
+				(int)((double)Console.BufferHeight * .9));
+
+			Internals.WindowManager.Instance.Push (this);
+		}
+
+		/// <summary>
+		/// Close this instance.
+		/// </summary>
+		public void Close ()
+		{
+			HandleClose ();
 			Internals.WindowManager.Instance.Close (this);
 		}
 
@@ -121,6 +151,12 @@ namespace ConsoleGui
 				c.HandleRepaint (context);
 			}
 			IsInvalid = false;
+		}
+
+		/// <summary>
+		/// Anything that needs to be handled before the window is closed closed.
+		/// </summary>
+		public virtual void HandleClose (){
 		}
 	}
 }

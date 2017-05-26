@@ -16,7 +16,8 @@ namespace ConsoleGui
 			Console.CursorVisible = false;
 			_isExiting = false;
 			_drawingContext = new Drawing.ConsoleDrawingContext ();
-			Internals.WindowManager.Instance.Push (mainForm);
+
+			mainForm.ShowForm ();
 		}
 
 		public void Run(){

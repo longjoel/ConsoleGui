@@ -11,13 +11,7 @@ namespace ConsoleGui.Dialogs
 
 		public YesNoDialog (string message)
 		{
-			// Dialog windows set their own region.
-			this.Region = new ConsoleGui.Drawing.Rect (
-				(int)((double)Console.BufferWidth * .1),
-				(int)((double)Console.BufferHeight * .1),
-				(int)((double)Console.BufferWidth * .9),
-				(int)((double)Console.BufferHeight * .9));
-
+			
 			// Layout engine for children controls.
 			this.LayoutEngine = new ConsoleGui.Drawing.TableLayoutEngine (this.Region.Interior);
 
