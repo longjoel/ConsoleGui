@@ -189,13 +189,22 @@ namespace ConsoleGui.Drawing
 			} else {
 				List<char> chars = null;
 				if (right == -1) {
-					chars = text.Skip (offset).ToList();
+					chars = text.Skip (offset).ToList ();
 				} else {
-					chars = text.Skip (offset).Take (right - left).ToList();
+					chars = text.Skip (offset).Take (right - left).ToList ();
 				}
 
 				for (int i = 0; i < chars.Count; i++) {
-					if (i == cursorLeft) {
+
+					if (i == 0 && cursorLeft >= (right - left)) {
+						Console.Write (BeginFormattedTextInverted);
+						Console.Write ('<');
+						Console.Write (EndFormattedText);
+					} else if (i == chars.Count - 1 && cursorLeft <= (right - left)  && text.Length > (right-left) ) {
+						Console.Write (BeginFormattedTextInverted);
+						Console.Write ('>');
+						Console.Write (EndFormattedText);
+					} else if (i == cursorLeft - Math.Max (0, offset)) {
 						Console.Write (BeginFormattedTextInverted);
 						Console.Write (chars [i]);
 						Console.Write (EndFormattedText);
@@ -207,81 +216,81 @@ namespace ConsoleGui.Drawing
 		}
 
 
-			public void DrawText (
-				ConsoleGui.Drawing.Rect region, 
-				string text, 
-				bool border = true,
-				bool wordWrap = true,
-				int lineOffset = 0,
-				bool drawScrollbarIfNeeded = true,
-				int cursorLeft = -1,
-				int cursorTop = -1,
-				bool isOverwrite = false)
-			{
-				var lines = new List<string> ();
+		public void DrawText (
+			ConsoleGui.Drawing.Rect region, 
+			string text, 
+			bool border = true,
+			bool wordWrap = true,
+			int lineOffset = 0,
+			bool drawScrollbarIfNeeded = true,
+			int cursorLeft = -1,
+			int cursorTop = -1,
+			bool isOverwrite = false)
+		{
+			var lines = new List<string> ();
 
-				var textRegion = new Rect (region.Left, region.Top, region.Right, region.Bottom);
+			var textRegion = new Rect (region.Left, region.Top, region.Right, region.Bottom);
 
-				// draw the border if available.
-				// if there is a border, shrink the text region to make room.
-				if (border) {
-					textRegion.Left += 1;
-					textRegion.Right -= 1;
-					textRegion.Top += 1;
-					textRegion.Bottom -= 1;
+			// draw the border if available.
+			// if there is a border, shrink the text region to make room.
+			if (border) {
+				textRegion.Left += 1;
+				textRegion.Right -= 1;
+				textRegion.Top += 1;
+				textRegion.Bottom -= 1;
 
-					DrawThinBorder (region);
-				}
-
-				// Clear out whatever got left behind
-				FillRectangle (textRegion);
-
-				var splitParagraphs = text.Split ('\n');
-
-				foreach (var p in splitParagraphs) {
-
-					var splitText = p.Split (' ');
-
-					var sb = new StringBuilder ();
-					for (int i = 0; i < splitText.Length; i++) {
-						if (sb.Length + splitText [i].Length <= textRegion.Right - textRegion.Left - 1) {
-							sb.Append (splitText [i]); 
-							sb.Append (" ");
-						} else {
-							lines.Add (sb.ToString ());
-							sb = new StringBuilder ();
-							sb.Append (splitText [i]); 
-							sb.Append (" ");
-						}
-					}
-					if (sb.ToString ().Length > 0) {
-						lines.Add (sb.ToString ());
-					}
-					sb.AppendLine ();
-				}
-
-				// scroll the text.
-				var actualLines = lines.Skip (lineOffset).Take (textRegion.Bottom - textRegion.Top + 1).ToList ();
-
-				// draw the text line by line.
-				for (int i = 0; i < actualLines.Count; i++) {
-					DrawString (textRegion.Left, textRegion.Top + i, actualLines [i], textRegion.Right);
-				}
-
-				// if a scroll bar is needed, draw it. The scroll bar sits on the right part of the window.
-				if (drawScrollbarIfNeeded && lines.Count > textRegion.Bottom - textRegion.Top) {
-					if (!border) {
-						for (int y = region.Top; y <= region.Bottom; y++) {
-							DrawString (region.Right, y, "│");
-						}
-					}
-
-					var cursorY = textRegion.Top + (int)(((double)lineOffset / (double)lines.Count) * (double)(textRegion.Bottom - textRegion.Top));
-
-					DrawString (region.Right, cursorY, "█");
-				}
-
+				DrawThinBorder (region);
 			}
+
+			// Clear out whatever got left behind
+			FillRectangle (textRegion);
+
+			var splitParagraphs = text.Split ('\n');
+
+			foreach (var p in splitParagraphs) {
+
+				var splitText = p.Split (' ');
+
+				var sb = new StringBuilder ();
+				for (int i = 0; i < splitText.Length; i++) {
+					if (sb.Length + splitText [i].Length <= textRegion.Right - textRegion.Left - 1) {
+						sb.Append (splitText [i]); 
+						sb.Append (" ");
+					} else {
+						lines.Add (sb.ToString ());
+						sb = new StringBuilder ();
+						sb.Append (splitText [i]); 
+						sb.Append (" ");
+					}
+				}
+				if (sb.ToString ().Length > 0) {
+					lines.Add (sb.ToString ());
+				}
+				sb.AppendLine ();
+			}
+
+			// scroll the text.
+			var actualLines = lines.Skip (lineOffset).Take (textRegion.Bottom - textRegion.Top + 1).ToList ();
+
+			// draw the text line by line.
+			for (int i = 0; i < actualLines.Count; i++) {
+				DrawString (textRegion.Left, textRegion.Top + i, actualLines [i], textRegion.Right);
+			}
+
+			// if a scroll bar is needed, draw it. The scroll bar sits on the right part of the window.
+			if (drawScrollbarIfNeeded && lines.Count > textRegion.Bottom - textRegion.Top) {
+				if (!border) {
+					for (int y = region.Top; y <= region.Bottom; y++) {
+						DrawString (region.Right, y, "│");
+					}
+				}
+
+				var cursorY = textRegion.Top + (int)(((double)lineOffset / (double)lines.Count) * (double)(textRegion.Bottom - textRegion.Top));
+
+				DrawString (region.Right, cursorY, "█");
+			}
+
+		}
 
 
 

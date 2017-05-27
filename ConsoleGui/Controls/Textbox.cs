@@ -74,7 +74,7 @@ namespace ConsoleGui.Controls
 				break;
 
 			case ConsoleKey.RightArrow:
-				if (_cursorCol < _lines [_cursorRow].Length ) {
+				if (_cursorCol < _lines [_cursorRow].Length) {
 					_cursorCol++;
 				}
 				break;
@@ -82,8 +82,8 @@ namespace ConsoleGui.Controls
 			// Some additional fudging may be necessary.
 			case ConsoleKey.Enter:
 				var currentLine = _lines [_cursorRow];
-				var newCurrentLine = string.Concat (_lines[_cursorRow].Take (_cursorCol));
-				var newNextLine = string.Concat (_lines[_cursorRow].Skip (_cursorCol));
+				var newCurrentLine = string.Concat (_lines [_cursorRow].Take (_cursorCol));
+				var newNextLine = string.Concat (_lines [_cursorRow].Skip (_cursorCol));
 				_lines [_cursorRow] = newCurrentLine;
 				_lines.Insert (_cursorRow + 1, newNextLine);
 				_cursorRow++;
@@ -91,14 +91,14 @@ namespace ConsoleGui.Controls
 
 			case ConsoleKey.Backspace:
 				if (_cursorCol > 0) {
-					_lines [CursorRow] = _lines [CursorRow].Remove (_cursorCol - 1,1);
+					_lines [CursorRow] = _lines [CursorRow].Remove (_cursorCol - 1, 1);
 					_cursorCol--;
 				}
 				break;
 
 			case ConsoleKey.Delete:
 				if (_cursorCol < _lines [CursorRow].Length - 1) {
-					_lines [CursorRow]=_lines [CursorRow].Remove (_cursorCol,1);
+					_lines [CursorRow] = _lines [CursorRow].Remove (_cursorCol, 1);
 				}
 
 				break;
@@ -127,7 +127,7 @@ namespace ConsoleGui.Controls
 				}
 				break;
 
-				// catch tab so it doesn't get added as part of the text.
+			// catch tab so it doesn't get added as part of the text.
 			case ConsoleKey.Tab:
 				break;
 
@@ -136,9 +136,9 @@ namespace ConsoleGui.Controls
 
 				if (Char.IsLetterOrDigit (keyInfo.KeyChar)
 				    || Char.IsPunctuation (keyInfo.KeyChar)
-					|| Char.IsWhiteSpace (keyInfo.KeyChar)) {
+				    || Char.IsWhiteSpace (keyInfo.KeyChar)) {
 					if (_cursorCol < _lines [_cursorRow].Length) {
-						_lines [_cursorRow]= _lines [_cursorRow].Insert (_cursorCol , keyInfo.KeyChar.ToString ());
+						_lines [_cursorRow] = _lines [_cursorRow].Insert (_cursorCol, keyInfo.KeyChar.ToString ());
 					} else {
 						_lines [_cursorRow] += keyInfo.KeyChar.ToString ();
 
@@ -167,20 +167,30 @@ namespace ConsoleGui.Controls
 		{
 			context.FillRectangle (Region);
 			context.DrawThinBorder (Region);
-			var halfHeight = ((Region.Interior.Bottom - Region.Interior.Top) / 2);
-			//var width = (Region.Interior.Right - Region.Interior.Left);
+			var halfHeight = (int)((Region.Interior.Bottom - Region.Interior.Top) / 2);
+			var width = (Region.Interior.Right - Region.Interior.Left);
 
 			int screenLineIndex = 0;
-			for (int i = -halfHeight; i < halfHeight; i++) {
+			for (int i = -halfHeight; i <= halfHeight; i++) {
 				var rowIndex = _cursorRow + i;
 
 				if (rowIndex >= 0 && rowIndex < _lines.Count) {
 
 					if (rowIndex == _cursorRow) {
-						context.DrawString (Region.Interior.Left, Region.Interior.Top +screenLineIndex, _lines [rowIndex], Region.Interior.Right, 0, _cursorCol);
+						context.DrawString (
+							Region.Interior.Left, 
+							Region.Interior.Top + screenLineIndex, 
+							_lines [rowIndex]+" ", 
+							Region.Interior.Right, 
+							_cursorCol - (width-1), 
+							_cursorCol);
 
 					} else {
-						context.DrawString (Region.Interior.Left, Region.Interior.Top +screenLineIndex, _lines [rowIndex], Region.Interior.Right);
+						context.DrawString (
+							Region.Interior.Left, 
+							Region.Interior.Top + screenLineIndex, 
+							_lines [rowIndex], 
+							Region.Interior.Right);
 					}
 
 
