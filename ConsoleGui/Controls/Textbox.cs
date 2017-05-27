@@ -98,7 +98,7 @@ namespace ConsoleGui.Controls
 
 			case ConsoleKey.Delete:
 				if (_cursorCol < _lines [CursorRow].Length - 1) {
-					_lines [CursorRow]=_lines [CursorRow].Remove (_cursorCol);
+					_lines [CursorRow]=_lines [CursorRow].Remove (_cursorCol,1);
 				}
 
 				break;
@@ -145,11 +145,6 @@ namespace ConsoleGui.Controls
 					}
 
 					_cursorCol++;
-//
-//					if (_cursorCol > (Region.Right - Region.Left)) {
-//						_cursorCol = 0;
-//						_cursorRow++;
-//					}
 				}
 
 				break;
@@ -170,20 +165,29 @@ namespace ConsoleGui.Controls
 
 		public override void HandleRepaint (ConsoleGui.Interfaces.Drawing.IDrawingContext context)
 		{
-			var scroll = _cursorRow - ((Region.Interior.Bottom - Region.Interior.Top)/2);
-			if (scroll < 0) {
-				scroll = 0;
-			}
 			context.FillRectangle (Region);
-			context.DrawText (Region,
-				this.Text, 
-				true, 
-				true, 
-				scroll,
-				true,
-				_cursorCol,
-				_cursorRow
-			);
+			context.DrawThinBorder (Region);
+			var halfHeight = ((Region.Interior.Bottom - Region.Interior.Top) / 2);
+			//var width = (Region.Interior.Right - Region.Interior.Left);
+
+			int screenLineIndex = 0;
+			for (int i = -halfHeight; i < halfHeight; i++) {
+				var rowIndex = _cursorRow + i;
+
+				if (rowIndex >= 0 && rowIndex < _lines.Count) {
+
+					if (rowIndex == _cursorRow) {
+						context.DrawString (Region.Interior.Left, Region.Interior.Top +screenLineIndex, _lines [rowIndex], Region.Interior.Right, 0, _cursorCol);
+
+					} else {
+						context.DrawString (Region.Interior.Left, Region.Interior.Top +screenLineIndex, _lines [rowIndex], Region.Interior.Right);
+					}
+
+
+					screenLineIndex += 1;
+				}
+
+			}
 
 			base.HandleRepaint (context);
 		}
