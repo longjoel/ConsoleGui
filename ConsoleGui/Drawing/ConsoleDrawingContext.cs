@@ -179,10 +179,30 @@ namespace ConsoleGui.Drawing
 		{
 			Console.SetCursorPosition (left, top);
 
-			if (right == -1) {
-				Console.Write (string.Concat (text.Skip (offset)));
+			if (cursorLeft == -1) {
+
+				if (right == -1) {
+					Console.Write (string.Concat (text.Skip (offset)));
+				} else {
+					Console.Write (string.Concat (text.Skip (offset).Take (right - left)));
+				}
 			} else {
-				Console.Write (string.Concat (text.Skip (offset).Take (right - left)));
+				List<char> chars = null;
+				if (right == -1) {
+					chars = text.Skip (offset).ToList();
+				} else {
+					chars = text.Skip (offset).Take (right - left).ToList();
+				}
+
+				for (int i = 0; i < chars.Count; i++) {
+					if (i == cursorLeft) {
+						Console.Write (BeginFormattedTextInverted);
+						Console.Write (chars [i]);
+						Console.Write (EndFormattedText);
+					} else {
+						Console.Write (chars [i]);
+					}
+				}
 			}
 		}
 
@@ -194,10 +214,13 @@ namespace ConsoleGui.Drawing
 			int lineOffset = 0,
 			bool drawScrollbarIfNeeded = true,
 			int cursorLeft = -1,
-			int cursorTop = -1,
+			int cursorParagraph = -1,
 			bool isOverwrite = false)
 		{
 			var lines = new List<string> ();
+
+			int realCursorCol = -1;
+			int realCursorRow = -1;
 
 			var textRegion = new Rect (region.Left, region.Top, region.Right, region.Bottom);
 
@@ -217,13 +240,23 @@ namespace ConsoleGui.Drawing
 
 			var splitParagraphs = text.Split ('\n');
 
-			foreach (var p in splitParagraphs) {
+			for(int j = 0; j < splitParagraphs.Length;j++){
+
+				if (j == cursorParagraph) {
+					realCursorRow = lines.Count ();
+					realCursorRow += cursorLeft / (textRegion.Right - textRegion.Left -1);
+
+					realCursorCol = cursorLeft % (textRegion.Right - textRegion.Left - 1);
+				}
+
+
+				var p = splitParagraphs[j];
 
 				var splitText = p.Split (' ');
 
 				var sb = new StringBuilder ();
 				for (int i = 0; i < splitText.Length; i++) {
-					if (sb.Length + StripDrawingChars( splitText [i]).Length <= textRegion.Right - textRegion.Left - 1) {
+					if (sb.Length + StripDrawingChars (splitText [i]).Length <= textRegion.Right - textRegion.Left - 1) {
 						sb.Append (splitText [i]); 
 						sb.Append (" ");
 					} else {
@@ -242,32 +275,25 @@ namespace ConsoleGui.Drawing
 			// scroll the text.
 			var actualLines = lines.Skip (lineOffset).Take (textRegion.Bottom - textRegion.Top + 1).ToList ();
 
-			var cursorRowOffset = cursorTop - lineOffset;
+			var cursorRowOffset = cursorParagraph - lineOffset;
 
 			// draw the text line by line.
 			for (int i = 0; i < actualLines.Count; i++) {
-				if (i == cursorRowOffset) {
-
-					var tmpCursorCol = cursorLeft;
-					if (tmpCursorCol < 0)
-						tmpCursorCol = 0;
-
-
-
-					var preCursor = string.Concat (actualLines [i].Take (tmpCursorCol ));
-					var blinkCursor = Invert (actualLines [i] [tmpCursorCol].ToString ());
-					var postCursor = string.Concat (actualLines [i].Skip (tmpCursorCol + 1));
-
+				if (i == realCursorRow) {
 					DrawString (
 						textRegion.Left, 
 						textRegion.Top + i, 
-						preCursor + blinkCursor + postCursor, 
-						textRegion.Right);
+						actualLines [i],
+						textRegion.Right,
+						0,
+						realCursorCol);
 				} else {
 					DrawString (textRegion.Left, 
 						textRegion.Top + i, 
 						actualLines [i], 
-						textRegion.Right);
+						textRegion.Right,
+						0,
+						-1);
 				}
 			}
 

@@ -145,15 +145,21 @@ namespace ConsoleGui.Controls
 					}
 
 					_cursorCol++;
+//
+//					if (_cursorCol > (Region.Right - Region.Left)) {
+//						_cursorCol = 0;
+//						_cursorRow++;
+//					}
 				}
 
 				break;
 			}
 
 
+
 			// bound checking.
-			if (_cursorCol >= _lines [_cursorRow].Length) {
-				_cursorCol = _lines [_cursorRow].Length-1;
+			if (_cursorCol > _lines [_cursorRow].Length) {
+				_cursorCol = _lines [_cursorRow].Length;
 			}
 
 			// Something happened, redraw.
