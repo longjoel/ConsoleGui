@@ -7,13 +7,34 @@ namespace ConsoleGui.Controls
 	public class Textbox:Control
 	{
 		private List<string> _lines;
-		public string Text { get { return string.Join ("\n", _lines); } set { _lines = value.Split ('\n'); Invalidate ();} }
+
+		public string Text { 
+			get { return string.Join ("\n", _lines); } 
+			set {
+				_lines = value.Split ('\n').ToList ();
+				Invalidate ();
+			} 
+		}
 
 		private int _cursorRow;
-		public int CursorRow { get{return _cursorRow; } set{_cursorRow = value; Invalidate (); } }
+
+		public int CursorRow { 
+			get{ return _cursorRow; } 
+			set {
+				_cursorRow = value;
+				Invalidate ();
+			} 
+		}
 
 		private int _cursorCol;
-		public int CursorCol { get{return _cursorCol; } set{_cursorCol = value; Invalidate (); } }
+
+		public int CursorCol {
+			get{ return _cursorCol; }
+			set {
+				_cursorCol = value;
+				Invalidate ();
+			}
+		}
 
 		public Textbox ()
 		{
@@ -22,10 +43,17 @@ namespace ConsoleGui.Controls
 
 			_cursorCol = 0;
 			_cursorRow = 0;
+
+			CanHaveFocus = true;
+
 		}
+
 
 		public override void HandleInput (ConsoleKeyInfo keyInfo)
 		{
+
+			var pageHeight = Region.Interior.Bottom - Region.Interior.Top;
+
 			switch (keyInfo.Key) {
 
 			// Handle the cursor movement keys.
@@ -35,7 +63,7 @@ namespace ConsoleGui.Controls
 				}
 				break;
 			case ConsoleKey.DownArrow:
-				if (_cursorRow < _lines.Count()-1) {
+				if (_cursorRow < _lines.Count () - 1) {
 					_cursorRow++;
 				}
 				break;
@@ -51,7 +79,7 @@ namespace ConsoleGui.Controls
 				}
 				break;
 
-				// Some additional fudging may be necessary.
+			// Some additional fudging may be necessary.
 			case ConsoleKey.Enter:
 				var currentLine = _lines [_cursorRow];
 				var newCurrentLine = string.Concat (_lines.Take (_cursorCol));
@@ -62,35 +90,61 @@ namespace ConsoleGui.Controls
 				break;
 
 			case ConsoleKey.Backspace:
+				if (_cursorCol > 0) {
+					_lines [CursorRow].Remove (_cursorCol - 1);
+					_cursorCol--;
+				}
 				break;
 
 			case ConsoleKey.Delete:
+				if (_cursorCol < _lines [CursorRow].Length - 1) {
+					_lines [CursorRow].Remove (_cursorCol);
+				}
+
 				break;
 
 			case ConsoleKey.Home:
+				_cursorRow = 0;
 				break;
 
 			case ConsoleKey.End:
+				_cursorRow = _lines.Count - 1;
 				break;
 
 			case ConsoleKey.PageUp:
+				_cursorRow -= pageHeight;
+
+				if (_cursorRow < 0)
+					_cursorRow = 0;
+
 				break;
 
 			case ConsoleKey.PageDown:
+				_cursorRow += pageHeight;
+
+				if (_cursorRow > _lines.Count - 1) {
+					_cursorRow = _lines.Count - 1;
+				}
 				break;
 
+				// catch tab so it doesn't get added as part of the text.
 			case ConsoleKey.Tab:
 				break;
 
-				// It's not one of the control chars we care about, so insert it.
+			// It's not one of the control chars we care about, so insert it.
 			default:
 
+				if (Char.IsLetterOrDigit (keyInfo.KeyChar)
+				    || Char.IsPunctuation (keyInfo.KeyChar)) {
+					if (_cursorCol < _lines [_cursorRow].Length) {
+						_lines [_cursorRow].Insert (_cursorCol + 1, keyInfo.KeyChar.ToString ());
+					} else {
+						_lines [_cursorRow] += keyInfo.KeyChar.ToString ();
 
-				if (Char.IsLetterOrDigit(keyInfo.KeyChar) 
-					|| Char.IsPunctuation(keyInfo.KeyChar)) {
-					_lines [_cursorRow].Insert (_cursorCol + 1, keyInfo.KeyChar.ToString ());
+					}
+
+					_cursorCol++;
 				}
-
 
 				break;
 			}
@@ -99,13 +153,27 @@ namespace ConsoleGui.Controls
 			// bound checking.
 			if (_cursorCol > _lines [_cursorRow].Length)
 				_cursorCol = _lines [_cursorRow].Length;
-			
+
+			// Something happened, redraw.
+			Invalidate ();
 
 			base.HandleInput (keyInfo);
 		}
 
 		public override void HandleRepaint (ConsoleGui.Interfaces.Drawing.IDrawingContext context)
 		{
+			var scroll = (Region.Interior.Bottom - Region.Interior.Top)/2;
+
+			context.DrawText (Region,
+				this.Text, 
+				true, 
+				true, 
+				scroll,
+				true,
+				_cursorCol,
+				_cursorRow
+			);
+
 			base.HandleRepaint (context);
 		}
 	}

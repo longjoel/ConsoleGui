@@ -9,6 +9,7 @@ namespace ConsoleGui.Drawing
 	public class ConsoleDrawingContext:Interfaces.Drawing.IDrawingContext
 	{
 		public const string BeginFormattedTextInverted = "\x1b[7m";
+		public const string BeginFormattedTextBlink = "\x1b[5m";
 		public const string EndFormattedText = "\x1b[0m";
 
 		public ConsoleDrawingContext ()
@@ -86,7 +87,8 @@ namespace ConsoleGui.Drawing
 
 		public string Blink (string text)
 		{
-			return text;
+			return  BeginFormattedTextBlink + text + EndFormattedText;
+
 		}
 
 		public string Invert (string text)
@@ -240,9 +242,18 @@ namespace ConsoleGui.Drawing
 			// scroll the text.
 			var actualLines = lines.Skip (lineOffset).Take (textRegion.Bottom - textRegion.Top + 1).ToList ();
 
+			var cursorRowOffset = cursorTop - lineOffset;
+
 			// draw the text line by line.
 			for (int i = 0; i < actualLines.Count; i++) {
-				DrawString (textRegion.Left, textRegion.Top + i, actualLines [i], textRegion.Right);
+				if (i == cursorRowOffset) {
+					var blinkString = string.Concat (actualLines [i].Take (cursorLeft - 1))
+						+ Invert (actualLines [i][cursorLeft].ToString())
+					                  + string.Concat (actualLines [i].Skip (cursorLeft + 1));
+					DrawString (textRegion.Left, textRegion.Top + i, blinkString, textRegion.Right);
+				} else {
+					DrawString (textRegion.Left, textRegion.Top + i, actualLines [i], textRegion.Right);
+				}
 			}
 
 			// if a scroll bar is needed, draw it. The scroll bar sits on the right part of the window.

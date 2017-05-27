@@ -83,6 +83,11 @@ namespace ConsoleGui.Samples
 
 			this.Controls.Add (showDialogButton);
 
+			var testTextbox = new Textbox{
+				Region = layout.GetRegion(0,4,2,2)};
+
+			this.Controls.Add (testTextbox);
+
 			base.OnInitialize ();
 		}
 
