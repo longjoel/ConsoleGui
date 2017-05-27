@@ -91,14 +91,14 @@ namespace ConsoleGui.Controls
 
 			case ConsoleKey.Backspace:
 				if (_cursorCol > 0) {
-					_lines [CursorRow].Remove (_cursorCol - 1);
+					_lines [CursorRow] = _lines [CursorRow].Remove (_cursorCol - 1);
 					_cursorCol--;
 				}
 				break;
 
 			case ConsoleKey.Delete:
 				if (_cursorCol < _lines [CursorRow].Length - 1) {
-					_lines [CursorRow].Remove (_cursorCol);
+					_lines [CursorRow]=_lines [CursorRow].Remove (_cursorCol);
 				}
 
 				break;
@@ -152,8 +152,8 @@ namespace ConsoleGui.Controls
 
 
 			// bound checking.
-			if (_cursorCol > _lines [_cursorRow].Length) {
-				_cursorCol = _lines [_cursorRow].Length;
+			if (_cursorCol >= _lines [_cursorRow].Length) {
+				_cursorCol = _lines [_cursorRow].Length-1;
 			}
 
 			// Something happened, redraw.

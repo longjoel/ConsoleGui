@@ -223,7 +223,7 @@ namespace ConsoleGui.Drawing
 
 				var sb = new StringBuilder ();
 				for (int i = 0; i < splitText.Length; i++) {
-					if (sb.Length + splitText [i].Length <= textRegion.Right - textRegion.Left - 1) {
+					if (sb.Length + StripDrawingChars( splitText [i]).Length <= textRegion.Right - textRegion.Left - 1) {
 						sb.Append (splitText [i]); 
 						sb.Append (" ");
 					} else {
@@ -247,16 +247,27 @@ namespace ConsoleGui.Drawing
 			// draw the text line by line.
 			for (int i = 0; i < actualLines.Count; i++) {
 				if (i == cursorRowOffset) {
-					var preCursor = string.Concat (actualLines [i].Take (cursorLeft ));
-					var blinkCursor = Invert (actualLines [i] [cursorLeft].ToString ());
-					var postCursor = string.Concat (actualLines [i].Skip (cursorLeft + 1));
+
+					var tmpCursorCol = cursorLeft;
+					if (tmpCursorCol < 0)
+						tmpCursorCol = 0;
+
+
+
+					var preCursor = string.Concat (actualLines [i].Take (tmpCursorCol ));
+					var blinkCursor = Invert (actualLines [i] [tmpCursorCol].ToString ());
+					var postCursor = string.Concat (actualLines [i].Skip (tmpCursorCol + 1));
+
 					DrawString (
 						textRegion.Left, 
 						textRegion.Top + i, 
 						preCursor + blinkCursor + postCursor, 
 						textRegion.Right);
 				} else {
-					DrawString (textRegion.Left, textRegion.Top + i, actualLines [i], textRegion.Right);
+					DrawString (textRegion.Left, 
+						textRegion.Top + i, 
+						actualLines [i], 
+						textRegion.Right);
 				}
 			}
 
