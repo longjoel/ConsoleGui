@@ -84,7 +84,8 @@ namespace ConsoleGui.Samples
 			this.Controls.Add (showDialogButton);
 
 			var testTextbox = new Textbox{
-				Region = layout.GetRegion(0,4,2,2)};
+				Region = layout.GetRegion(0,4,2,2),
+			Text = "This is some damn text"};
 
 			this.Controls.Add (testTextbox);
 

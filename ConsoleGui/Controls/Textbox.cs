@@ -135,9 +135,10 @@ namespace ConsoleGui.Controls
 			default:
 
 				if (Char.IsLetterOrDigit (keyInfo.KeyChar)
-				    || Char.IsPunctuation (keyInfo.KeyChar)) {
+				    || Char.IsPunctuation (keyInfo.KeyChar)
+					|| Char.IsWhiteSpace (keyInfo.KeyChar)) {
 					if (_cursorCol < _lines [_cursorRow].Length) {
-						_lines [_cursorRow].Insert (_cursorCol + 1, keyInfo.KeyChar.ToString ());
+						_lines [_cursorRow]= _lines [_cursorRow].Insert (_cursorCol , keyInfo.KeyChar.ToString ());
 					} else {
 						_lines [_cursorRow] += keyInfo.KeyChar.ToString ();
 
@@ -151,8 +152,9 @@ namespace ConsoleGui.Controls
 
 
 			// bound checking.
-			if (_cursorCol > _lines [_cursorRow].Length)
+			if (_cursorCol > _lines [_cursorRow].Length) {
 				_cursorCol = _lines [_cursorRow].Length;
+			}
 
 			// Something happened, redraw.
 			Invalidate ();
@@ -162,8 +164,11 @@ namespace ConsoleGui.Controls
 
 		public override void HandleRepaint (ConsoleGui.Interfaces.Drawing.IDrawingContext context)
 		{
-			var scroll = (Region.Interior.Bottom - Region.Interior.Top)/2;
-
+			var scroll = _cursorRow - ((Region.Interior.Bottom - Region.Interior.Top)/2);
+			if (scroll < 0) {
+				scroll = 0;
+			}
+			context.FillRectangle (Region);
 			context.DrawText (Region,
 				this.Text, 
 				true, 
