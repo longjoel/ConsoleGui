@@ -244,9 +244,9 @@ namespace ConsoleGui.Drawing
 
 				if (j == cursorParagraph) {
 					realCursorRow = lines.Count ();
-					realCursorRow += cursorLeft / (textRegion.Right - textRegion.Left -1);
+					realCursorRow += cursorLeft / (textRegion.Right - textRegion.Left);
 
-					realCursorCol = cursorLeft % (textRegion.Right - textRegion.Left - 1);
+					realCursorCol = cursorLeft % (textRegion.Right - textRegion.Left);
 				}
 
 
@@ -279,7 +279,7 @@ namespace ConsoleGui.Drawing
 
 			// draw the text line by line.
 			for (int i = 0; i < actualLines.Count; i++) {
-				if (i == realCursorRow) {
+				if (i == cursorRowOffset) {
 					DrawString (
 						textRegion.Left, 
 						textRegion.Top + i, 

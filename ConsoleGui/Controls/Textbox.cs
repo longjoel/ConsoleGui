@@ -74,7 +74,7 @@ namespace ConsoleGui.Controls
 				break;
 
 			case ConsoleKey.RightArrow:
-				if (_cursorCol < _lines [_cursorRow].Length - 1) {
+				if (_cursorCol < _lines [_cursorRow].Length ) {
 					_cursorCol++;
 				}
 				break;
@@ -82,8 +82,8 @@ namespace ConsoleGui.Controls
 			// Some additional fudging may be necessary.
 			case ConsoleKey.Enter:
 				var currentLine = _lines [_cursorRow];
-				var newCurrentLine = string.Concat (_lines.Take (_cursorCol));
-				var newNextLine = string.Concat (_lines.Skip (_cursorCol));
+				var newCurrentLine = string.Concat (_lines[_cursorRow].Take (_cursorCol));
+				var newNextLine = string.Concat (_lines[_cursorRow].Skip (_cursorCol));
 				_lines [_cursorRow] = newCurrentLine;
 				_lines.Insert (_cursorRow + 1, newNextLine);
 				_cursorRow++;
@@ -91,7 +91,7 @@ namespace ConsoleGui.Controls
 
 			case ConsoleKey.Backspace:
 				if (_cursorCol > 0) {
-					_lines [CursorRow] = _lines [CursorRow].Remove (_cursorCol - 1);
+					_lines [CursorRow] = _lines [CursorRow].Remove (_cursorCol - 1,1);
 					_cursorCol--;
 				}
 				break;
