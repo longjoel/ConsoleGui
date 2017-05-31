@@ -90,15 +90,25 @@ namespace ConsoleGui.Controls
 				break;
 
 			case ConsoleKey.Backspace:
+
+				if (_lines [_cursorRow].Count() == 0) {
+					_lines.RemoveAt (_cursorRow);
+				}
+
 				if (_cursorCol > 0) {
-					_lines [CursorRow] = _lines [CursorRow].Remove (_cursorCol - 1, 1);
+					_lines [_cursorRow] = _lines [_cursorRow].Remove (_cursorCol - 1, 1);
 					_cursorCol--;
 				}
 				break;
 
 			case ConsoleKey.Delete:
-				if (_cursorCol < _lines [CursorRow].Length - 1) {
-					_lines [CursorRow] = _lines [CursorRow].Remove (_cursorCol, 1);
+
+				if (_lines [_cursorRow].Count() == 0) {
+					_lines.RemoveAt (_cursorRow);
+				}
+
+				if (_cursorCol < _lines [_cursorRow].Length - 1) {
+					_lines [_cursorRow] = _lines [_cursorRow].Remove (_cursorCol, 1);
 				}
 
 				break;
@@ -176,7 +186,7 @@ namespace ConsoleGui.Controls
 
 				if (rowIndex >= 0 && rowIndex < _lines.Count) {
 
-					if (rowIndex == _cursorRow) {
+					if (rowIndex == _cursorRow && HasFocus) {
 						context.DrawString (
 							Region.Interior.Left, 
 							Region.Interior.Top + screenLineIndex, 

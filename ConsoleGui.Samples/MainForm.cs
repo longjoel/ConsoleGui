@@ -83,11 +83,18 @@ namespace ConsoleGui.Samples
 
 			this.Controls.Add (showDialogButton);
 
-			var testTextbox = new Textbox{
-				Region = layout.GetRegion(0,4,2,2),
-			Text = "This is some damn text"};
+			// Add a very simple button to demonstrate opening a new dialog.
+			var showTextBoxButton = new Button {
+				TextAllignment = TextAllignment.Center,
+				Text = "Show a textbox.",
+				Region = layout.GetRegion (1, 3, 1, 1),
+				OnClick = () => {
+					new TextBoxForm().ShowDialog ();
+				},
+			};
 
-			this.Controls.Add (testTextbox);
+			this.Controls.Add (showTextBoxButton);
+
 
 			base.OnInitialize ();
 		}
