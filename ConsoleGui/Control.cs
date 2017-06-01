@@ -10,8 +10,6 @@ namespace ConsoleGui
 		public bool HasFocus { get; set; }
 		public bool IsInvalid { get; set; }
 
-		Form ParentForm { get; set; }
-
 		public Control ()
 		{
 			CanHaveFocus = false;

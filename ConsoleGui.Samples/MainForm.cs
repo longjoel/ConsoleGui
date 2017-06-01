@@ -83,7 +83,7 @@ namespace ConsoleGui.Samples
 
 			this.Controls.Add (showDialogButton);
 
-			// Add a very simple button to demonstrate opening a new dialog.
+			// Add a very simple button to open a new form demonstrating the textbox.
 			var showTextBoxButton = new Button {
 				TextAllignment = TextAllignment.Center,
 				Text = "Show a textbox.",

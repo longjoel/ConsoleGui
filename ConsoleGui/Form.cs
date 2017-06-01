@@ -47,7 +47,6 @@ namespace ConsoleGui
 		{
 			IsInvalid = true;
 			Controls = new List<Control> ();
-			//LayoutEngine = new ConsoleGui.Drawing.LayoutEngine ();
 			_controlFocusedIndex = -1;
 		}
 

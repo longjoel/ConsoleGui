@@ -177,14 +177,14 @@ namespace ConsoleGui.Controls
 		{
 			context.FillRectangle (Region);
 			context.DrawThinBorder (Region);
-			var halfHeight = (int)((Region.Interior.Bottom - Region.Interior.Top) / 2);
+			var height = (int)(Region.Interior.Bottom - Region.Interior.Top);
 			var width = (Region.Interior.Right - Region.Interior.Left);
 
 			int screenLineIndex = 0;
-			for (int i = -halfHeight; i <= halfHeight; i++) {
+			for (int i = -height; i <= height; i++) {
 				var rowIndex = _cursorRow + i;
 
-				if (rowIndex >= 0 && rowIndex < _lines.Count) {
+				if (rowIndex >= 0 && rowIndex < _lines.Count && screenLineIndex <= height) {
 
 					if (rowIndex == _cursorRow && HasFocus) {
 						context.DrawString (
