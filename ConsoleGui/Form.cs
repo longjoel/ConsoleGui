@@ -106,8 +106,8 @@ namespace ConsoleGui
 			this.Region = new ConsoleGui.Drawing.Rect (
 				0, 
 				0, 
-				Console.BufferWidth - 1, 
-				Console.BufferHeight - 1);
+				Console.WindowWidth - 1, 
+				Console.WindowHeight - 1);
 
 			Internals.WindowManager.Instance.Push (this);
 		}
@@ -118,10 +118,10 @@ namespace ConsoleGui
 		public void ShowDialog ()
 		{
 			this.Region = new ConsoleGui.Drawing.Rect (
-				(int)((double)Console.BufferWidth * .1),
-				(int)((double)Console.BufferHeight * .1),
-				(int)((double)Console.BufferWidth * .9),
-				(int)((double)Console.BufferHeight * .9));
+				(int)((double)Console.WindowWidth * .1),
+				(int)((double)Console.WindowHeight * .1),
+				(int)((double)Console.WindowWidth * .9),
+				(int)((double)Console.WindowHeight * .9));
 
 			Internals.WindowManager.Instance.Push (this);
 		}
